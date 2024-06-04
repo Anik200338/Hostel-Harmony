@@ -1,6 +1,9 @@
 // import React from 'react';
 
 import Banner from '../../Component/Banner/Banner';
+import MealTab from '../../Component/Tab/MealTab';
+// import Tab from '../../Component/Tab/Tab';
+// import Tab from '../../Component/Tab/Tab';
 
 // import Slider from '../component/slider/slider';
 // import Banner from '../component/Banner/Banner';
@@ -15,6 +18,7 @@ const Home = () => {
     <div>
       <h2>this Home</h2>
       <Banner></Banner>
+      <MealTab></MealTab>
       {/* <Slider></Slider>
       <div className="w-full mt-20">
         <Banner></Banner>

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FaUtensils } from 'react-icons/fa';
@@ -15,7 +16,8 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${
   import.meta.env.VITE_IMAGE_HOSTING_KEY
 }`;
 console.log(image_hosting_api);
-const AddMeal = () => {
+
+const AddUpcoming = () => {
   const { user, setLoading } = useContext(AuthContext);
   const { register, handleSubmit } = useForm();
   const axiosPublic = useAxiosPublic();
@@ -23,7 +25,7 @@ const AddMeal = () => {
 
   const { mutateAsync } = useMutation({
     mutationFn: async mealItem => {
-      const { data } = await axiosSecure.post(`/AddMeal`, mealItem);
+      const { data } = await axiosSecure.post(`/AddUpcomingMeal`, mealItem);
       return data;
     },
     onSuccess: () => {
@@ -90,7 +92,6 @@ const AddMeal = () => {
     // }
     // console.log('with image url', res.data);
   };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="form-control w-full my-6">
@@ -185,4 +186,4 @@ const AddMeal = () => {
   );
 };
 
-export default AddMeal;
+export default AddUpcoming;
