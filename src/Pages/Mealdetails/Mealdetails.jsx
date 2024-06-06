@@ -1,14 +1,50 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../Provider/AuthProvider';
 import useAxiosPublic from '../../Hooks/useAxiosPublic';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Mealdetails = () => {
   const { id } = useParams();
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
   const [review, setReview] = useState('');
+  const [hasLiked, setHasLiked] = useState(false);
+
+  const [subscriptionPackage, setSubscriptionPackage] = useState(null); // State to hold user's subscription package
+
+  // Fetch user's subscription package
+  useEffect(() => {
+    const fetchUserSubscription = async () => {
+      try {
+        const res = await axiosPublic.get(`/users/${user?.email}`);
+        setSubscriptionPackage(res.data.subscriptionPackage);
+      } catch (error) {
+        console.error('Error fetching user subscription:', error);
+      }
+    };
+
+    if (user?.email) {
+      fetchUserSubscription();
+    }
+  }, [user?.email, axiosPublic]);
+  console.log(subscriptionPackage);
+
+  useEffect(() => {
+    const checkUserLike = async () => {
+      try {
+        const res = await axiosPublic.get(`/checkLike/${id}/${user?.email}`);
+        setHasLiked(res.data.hasLiked);
+      } catch (error) {
+        console.error('Error checking user like:', error);
+      }
+    };
+
+    if (user?.email && id) {
+      checkUserLike();
+    }
+  }, [user?.email, id, axiosPublic]);
 
   const {
     data: singleMeal = {},
@@ -33,15 +69,31 @@ const Mealdetails = () => {
     },
   });
   const handleLike = async () => {
+    if (subscriptionPackage === 'Bronze') {
+      toast.error('Please buy a subscription first!');
+      return;
+    }
+    if (hasLiked) {
+      toast.error('You have already liked this meal!');
+      return;
+    }
+
     try {
-      await axiosPublic.post(`/likeMeal/${id}`);
-      refetch(); // Refetch the data after liking the meal
+      await axiosPublic.post(`/likeMeal/${id}`, { email: user?.email });
+      setHasLiked(true);
+      refetch();
+      toast.success('Meal liked successfully!');
     } catch (error) {
       console.error('Error liking the meal:', error);
     }
   };
   const handleReviewSubmit = async e => {
     e.preventDefault();
+    if (subscriptionPackage === 'Bronze') {
+      toast.error('Please buy a subscription first!'); // Show toast notification
+      return;
+    }
+
     const currentDateAndTime = new Date().toLocaleString();
     const Addreview = {
       review,
@@ -60,6 +112,26 @@ const Mealdetails = () => {
       AllReviewrefetch(); // Refetch the data after submitting a review
     } catch (error) {
       console.error('Error submitting the review:', error);
+    }
+  };
+  const handleMealRequest = async () => {
+    if (subscriptionPackage === 'Bronze') {
+      toast.error('Please buy a subscription first!'); // Show toast notification
+      return;
+    }
+
+    try {
+      const requestPayload = {
+        User: {
+          email: user?.email,
+          Name: user?.displayName,
+          photo: user?.photoURL,
+        },
+      };
+      await axiosPublic.post(`/requestMeal/${id}`, requestPayload);
+      alert('Meal request submitted successfully!');
+    } catch (error) {
+      console.error('Error requesting the meal:', error);
     }
   };
   if (isLoading) return <div>Loading...</div>;
@@ -86,9 +158,15 @@ const Mealdetails = () => {
           </div>
           <div className="flex">
             <button className="btn btn-primary mr-4" onClick={handleLike}>
-              like
+              {hasLiked ? 'Liked' : 'Like'}
             </button>
-            <button className="btn btn-primary">meal request</button>
+            {subscriptionPackage ? (
+              <button className="btn btn-primary" onClick={handleMealRequest}>
+                Meal Request
+              </button>
+            ) : (
+              <p>Please wait...</p>
+            )}
           </div>
           <div>
             <h2 className="text-3xl mt-4">Reviews</h2>

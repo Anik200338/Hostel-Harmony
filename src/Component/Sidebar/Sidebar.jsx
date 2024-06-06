@@ -10,6 +10,7 @@ import { NavLink } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Provider/AuthProvider';
+import useAdmin from '../../Hooks/useAdmin';
 
 const Sidebar = () => {
   const { logOut } = useContext(AuthContext);
@@ -19,6 +20,8 @@ const Sidebar = () => {
   const handleToggle = () => {
     setActive(!isActive);
   };
+
+  const [isAdmin] = useAdmin();
   return (
     <>
       {/* Small Screen Navbar */}
@@ -64,58 +67,119 @@ const Sidebar = () => {
 
             {/*  Menu Items */}
             <nav>
-              {/* Statistics */}
-              <NavLink
-                to="AllReview"
-                end
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
-                  }`
-                }
-              >
-                <BsGraphUp className="w-5 h-5" />
+              {isAdmin ? (
+                <>
+                  {/* Admin */}
+                  <NavLink
+                    to="ManageUsers"
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <BsGraphUp className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">AllReview</span>
-              </NavLink>
+                    <span className="mx-4 font-medium">Manage Users</span>
+                  </NavLink>
+                  {/* Statistics */}
+                  <NavLink
+                    to="AllReview"
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <BsGraphUp className="w-5 h-5" />
 
-              {/* Add Room */}
-              <NavLink
-                to="addMeal"
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
-                  }`
-                }
-              >
-                <BsFillHouseAddFill className="w-5 h-5" />
+                    <span className="mx-4 font-medium">AllReview</span>
+                  </NavLink>
+                  {/* Add Room */}
+                  <NavLink
+                    to="addMeal"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <BsFillHouseAddFill className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">Add Meal</span>
-              </NavLink>
-              <NavLink
-                to="upmeals"
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
-                  }`
-                }
-              >
-                <MdHomeWork className="w-5 h-5" />
+                    <span className="mx-4 font-medium">Add Meal</span>
+                  </NavLink>
+                  {/* Upcoming Meals */}
+                  <NavLink
+                    to="upmeals"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <MdHomeWork className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">Upcoming Meals</span>
-              </NavLink>
-              <NavLink
-                to="MyReview"
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
-                  }`
-                }
-              >
-                <MdHomeWork className="w-5 h-5" />
+                    <span className="mx-4 font-medium">Upcoming Meals</span>
+                  </NavLink>
+                  {/* Serve Meals */}
+                  <NavLink
+                    to="ServeMeals"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <MdHomeWork className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">MyReview</span>
-              </NavLink>
+                    <span className="mx-4 font-medium">Serve Meals</span>
+                  </NavLink>
+                </>
+              ) : (
+                <>
+                  {/* user */}
+                  <NavLink
+                    to="MyReview"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <MdHomeWork className="w-5 h-5" />
+
+                    <span className="mx-4 font-medium">MyReview</span>
+                  </NavLink>
+                  <NavLink
+                    to="RequestedMeals"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <MdHomeWork className="w-5 h-5" />
+
+                    <span className="mx-4 font-medium">RequestedMeals</span>
+                  </NavLink>
+                </>
+              )}
             </nav>
           </div>
         </div>

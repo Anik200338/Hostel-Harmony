@@ -1,21 +1,21 @@
 import React, { useContext } from 'react';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
-import { useQuery } from '@tanstack/react-query';
 import { AuthContext } from '../../../Provider/AuthProvider';
-import SingleMyReview from './SingleMyReview';
+import { useQuery } from '@tanstack/react-query';
+import SingleRequested from './SingleRequested';
 
-const Myreview = () => {
+const RequestedMeals = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
-  const { data: ForMe = {}, isLoading } = useQuery({
-    queryKey: ['ForMe', user],
+  const { data: Requested = {}, isLoading } = useQuery({
+    queryKey: ['Requested', user],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/MyReviewForMe/${user?.email}`);
+      const res = await axiosPublic.get(`/Requested/${user?.email}`);
       return res.data;
     },
   });
   if (isLoading) return <div>Loading...</div>;
-  console.log(ForMe);
+  console.log(Requested);
   return (
     <div>
       <table className="table">
@@ -29,12 +29,12 @@ const Myreview = () => {
             <th>Details </th>
           </tr>
         </thead>
-        {ForMe?.map((myrev, index) => (
-          <SingleMyReview key={myrev.id} myrev={myrev} index={index} />
+        {Requested.map((Queries, index) => (
+          <SingleRequested key={Queries.id} Queries={Queries} index={index} />
         ))}
       </table>
     </div>
   );
 };
 
-export default Myreview;
+export default RequestedMeals;

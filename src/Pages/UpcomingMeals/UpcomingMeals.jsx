@@ -1,18 +1,29 @@
 import { useQuery } from '@tanstack/react-query';
 import useAxiosPublic from '../../Hooks/useAxiosPublic';
+import UpcomingCard from '../../Component/UpcomingCard/UpcomingCard';
 
 const UpcomingMeals = () => {
   const axiosPublic = useAxiosPublic();
-  const { data: meal = [] } = useQuery({
-    queryKey: ['meal'],
+  const { data: UpcomingMeal = [], refetch } = useQuery({
+    queryKey: ['UpcomingMeal'],
     queryFn: async () => {
-      const res = await axiosPublic.get('/meal');
+      const res = await axiosPublic.get('/UpcomingMeal');
       return res.data;
     },
   });
-  console.log(meal);
+  console.log(UpcomingMeal);
 
-  return <div>this is upcoming{meal.length}</div>;
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20">
+      {UpcomingMeal.map(UpcomingSingle => (
+        <UpcomingCard
+          key={UpcomingSingle.id}
+          UpcomingSingle={UpcomingSingle}
+          refetch={refetch}
+        ></UpcomingCard>
+      ))}
+    </div>
+  );
 };
 
 export default UpcomingMeals;

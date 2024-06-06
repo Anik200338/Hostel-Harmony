@@ -16,6 +16,11 @@ import AddUpcoming from '../Pages/DashboardPage/AddUpcoming/AddUpcoming';
 import Mealdetails from '../Pages/Mealdetails/Mealdetails';
 import AllReview from '../Pages/DashboardPage/AllReview/AllReview';
 import Myreview from '../Pages/DashboardPage/Myreview/Myreview';
+import UpdateReview from '../Component/UpdateReview/UpdateReview';
+import ServeMeals from '../Pages/DashboardPage/ServeMeals/ServeMeals';
+import RequestedMeals from '../Pages/DashboardPage/MealRequest/RequestedMeals';
+import ManageUsers from '../Pages/DashboardPage/UpMeals/ManageUsers/ManageUsers';
+import Checkout from '../Component/Checkout/Checkout';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +44,10 @@ const router = createBrowserRouter([
         path: '/mealDetails/:id',
         element: <Mealdetails></Mealdetails>,
       },
+      {
+        path: '/checkout/:id',
+        element: <Checkout></Checkout>,
+      },
     ],
   },
   {
@@ -53,6 +62,10 @@ const router = createBrowserRouter([
     path: '/dashboard',
     element: <Dashboard></Dashboard>,
     children: [
+      {
+        path: 'ManageUsers',
+        element: <ManageUsers></ManageUsers>,
+      },
       {
         path: 'addMeal',
         element: <AddMeal></AddMeal>,
@@ -72,6 +85,18 @@ const router = createBrowserRouter([
       {
         path: 'MyReview',
         element: <Myreview></Myreview>,
+      },
+      {
+        path: '/dashboard/MyReview/UpdateReview/:id',
+        element: <UpdateReview></UpdateReview>,
+      },
+      {
+        path: 'ServeMeals',
+        element: <ServeMeals></ServeMeals>,
+      },
+      {
+        path: 'RequestedMeals',
+        element: <RequestedMeals></RequestedMeals>,
       },
     ],
   },

@@ -2,14 +2,13 @@ import toast from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { useContext } from 'react';
-
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import axios from 'axios';
 import { AuthContext } from '../../Provider/AuthProvider';
+import useAxiosPublic from '../../Hooks/useAxiosPublic';
 
 const SocialLogin = () => {
   const { googleLogin, githubLogin } = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,8 +19,17 @@ const SocialLogin = () => {
     socialProvider()
       .then(result => {
         if (result.user) {
-          toast.success('Login successful!');
-          navigate(from);
+          console.log(result.user);
+          const userInfo = {
+            email: result.user?.email,
+            name: result.user?.displayName,
+            badge: 'Bronze',
+          };
+          axiosPublic.post('/users', userInfo).then(res => {
+            console.log(res.data);
+            toast.success('Login successful!');
+            navigate(from);
+          });
         } else {
           toast.error('Social login failed. Please try again.'); // Display error message
         }

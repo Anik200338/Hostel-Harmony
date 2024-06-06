@@ -7,7 +7,9 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 import { AuthContext } from '../../Provider/AuthProvider';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import useAxiosPublic from '../../Hooks/useAxiosPublic';
 const Register = () => {
+  const axiosPublic = useAxiosPublic();
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const {
     register,
@@ -40,8 +42,20 @@ const Register = () => {
     createUser(data.email, data.password, data.Photo, data.fullname)
       .then(() => {
         updateUserProfile(data.fullname, data.Photo).then(() => {
-          toast.success('Registration successful! You have been logged in.');
-          navigate(from);
+          const userInfo = {
+            name: data.fullname,
+            email: data.email,
+            badge: 'Bronze',
+          };
+          axiosPublic.post('/users', userInfo).then(res => {
+            if (res.data.insertedId) {
+              console.log('user added to the database');
+              toast.success(
+                'Registration successful! You have been logged in.'
+              );
+              navigate(from);
+            }
+          });
         });
       })
       .catch(error => {
