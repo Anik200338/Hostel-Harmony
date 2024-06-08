@@ -21,6 +21,8 @@ import ServeMeals from '../Pages/DashboardPage/ServeMeals/ServeMeals';
 import RequestedMeals from '../Pages/DashboardPage/MealRequest/RequestedMeals';
 import ManageUsers from '../Pages/DashboardPage/UpMeals/ManageUsers/ManageUsers';
 import Checkout from '../Component/Checkout/Checkout';
+import AllMeals from '../Pages/DashboardPage/AllMeals/AllMeals';
+import AllMealsUpdate from '../Component/allMealsUpdate/AllMealsUpdate';
 
 const router = createBrowserRouter([
   {
@@ -99,6 +101,14 @@ const router = createBrowserRouter([
       {
         path: 'RequestedMeals',
         element: <RequestedMeals></RequestedMeals>,
+      },
+      {
+        path: 'allMeals',
+        element: <AllMeals></AllMeals>,
+      },
+      {
+        path: '/dashboard/allMeals/allMealsUpdate/:id',
+        element: <AllMealsUpdate></AllMealsUpdate>,
       },
     ],
   },
