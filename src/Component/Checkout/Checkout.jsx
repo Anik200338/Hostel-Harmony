@@ -1,24 +1,13 @@
 import React, { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 import { AuthContext } from '../../Provider/AuthProvider';
 import useAxiosPublic from '../../Hooks/useAxiosPublic';
 import { useQuery } from '@tanstack/react-query';
 import Payment from './Payment/Payment';
 
 const Checkout = () => {
-  const { id } = useParams();
-  const axiosPublic = useAxiosPublic();
-  const { user } = useContext(AuthContext);
+  const singlePack = useLoaderData();
 
-  const { data: singlePack = [], isLoading } = useQuery({
-    queryKey: ['singlePack', id],
-    queryFn: async () => {
-      const res = await axiosPublic.get(`/singlePack/${id}`);
-      return res.data;
-    },
-  });
-  if (isLoading) return <div>Loading...</div>;
-  console.log(singlePack);
   return (
     <div className=" border border-gray-950">
       <div

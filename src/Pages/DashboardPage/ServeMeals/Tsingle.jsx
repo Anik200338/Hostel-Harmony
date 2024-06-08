@@ -1,7 +1,7 @@
 import React from 'react';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 
-const Tsingle = ({ Tmyb, status, index, handleDelete, cop }) => {
+const Tsingle = ({ Tmyb, status, index, handleDelete, cop, User }) => {
   const { title, _id, review } = Tmyb;
   const axiosPublic = useAxiosPublic();
 
@@ -29,7 +29,7 @@ const Tsingle = ({ Tmyb, status, index, handleDelete, cop }) => {
           </div>
         </td>
         <td>{title}</td>
-        <td>{cop}</td>
+        <td>{User}</td>
         <td>{review}</td>
         <th>
           <button

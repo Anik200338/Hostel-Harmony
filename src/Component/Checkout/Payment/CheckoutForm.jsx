@@ -15,11 +15,13 @@ const CheckoutForm = ({ singlePack }) => {
   const { price, _id } = singlePack;
 
   useEffect(() => {
-    axiosSecure.post('/create-payment-intent', { price: price }).then(res => {
-      console.log(res.data.clientSecret);
-      setClientSecret(res.data.clientSecret);
-    });
-  }, [axiosSecure, price]);
+    if (clientSecret.length == 0) {
+      axiosSecure.post('/create-payment-intent', { price: price }).then(res => {
+        console.log(res.data.clientSecret);
+        setClientSecret(res.data.clientSecret);
+      });
+    }
+  }, [axiosSecure]);
 
   const handleSubmit = async event => {
     event.preventDefault();

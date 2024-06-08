@@ -18,6 +18,7 @@ const UpcomingCard = ({ UpcomingSingle, refetch }) => {
     price,
     _id,
     postTime,
+    description,
     ingredients,
   } = UpcomingSingle;
 
@@ -66,14 +67,21 @@ const UpcomingCard = ({ UpcomingSingle, refetch }) => {
     }
 
     try {
-      await axiosPublic.post(`/likeUpcomingMeal/${_id}`, {
+      const response = await axiosPublic.post(`/likeUpcomingMeal/${_id}`, {
         email: user?.email,
       });
       setHasLiked(true);
+
+      if (response.data.message === 'Meal added to the regular menu') {
+        toast.success('Meal liked successfully and added to the regular menu!');
+      } else {
+        toast.success('Meal liked successfully!');
+      }
+
       refetch(); // Refetch the data after liking the meal
-      toast.success('Meal liked successfully!');
     } catch (error) {
       console.error('Error liking the meal:', error);
+      toast.error('Error liking the meal');
     }
   };
 

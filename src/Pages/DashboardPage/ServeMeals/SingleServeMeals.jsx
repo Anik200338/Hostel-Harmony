@@ -5,16 +5,21 @@ import Tsingle from './Tsingle';
 
 const SingleServeMeals = ({ Queries, index }) => {
   const axiosPublic = useAxiosPublic();
-  const { status, id, _id } = Queries;
-  const { data: singlereq = {}, isLoading } = useQuery({
+  const { status, id, _id, User } = Queries; // Correctly destructure User object
+  const { email } = User; // Destructure email from User object
+
+  const { data: singlereq = [], isLoading } = useQuery({
     queryKey: ['singlereq', id],
     queryFn: async () => {
       const res = await axiosPublic.get(`/singlereq/${id}`);
       return res.data;
     },
   });
+
   if (isLoading) return <div>Loading...</div>;
+
   console.log(singlereq);
+
   return (
     <>
       {singlereq.map(Tmyb => (
@@ -23,8 +28,8 @@ const SingleServeMeals = ({ Queries, index }) => {
           Tmyb={Tmyb}
           status={status}
           index={index}
-          // handleDelete={handleDelete}
           cop={_id}
+          User={email} // Pass the email to the Tsingle component
         />
       ))}
     </>

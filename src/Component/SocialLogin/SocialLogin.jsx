@@ -25,7 +25,7 @@ const SocialLogin = () => {
             name: result.user?.displayName,
             badge: 'Bronze',
           };
-          axiosPublic.post('/users', userInfo).then(res => {
+          axiosPublic.post('/user', userInfo).then(res => {
             console.log(res.data);
             toast.success('Login successful!');
             navigate(from);

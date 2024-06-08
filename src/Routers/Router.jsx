@@ -47,6 +47,8 @@ const router = createBrowserRouter([
       {
         path: '/checkout/:id',
         element: <Checkout></Checkout>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/singlePack/${params.id}`),
       },
     ],
   },

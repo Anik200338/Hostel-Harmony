@@ -1,23 +1,25 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 import { IoIosAdd } from 'react-icons/io';
 import { AuthContext } from '../../../Provider/AuthProvider';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const UpMeals = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
 
   const {
-    data: meals = [],
+    data: UpcomingMeal = [],
     isLoading,
     error,
+    refetch,
   } = useQuery({
-    queryKey: ['meal'],
+    queryKey: ['UpcomingMeal'],
     queryFn: async () => {
-      const res = await axiosPublic.get('/meal');
+      const res = await axiosPublic.get('UpcomingMeal');
       return res.data;
     },
   });
@@ -35,8 +37,16 @@ const UpMeals = () => {
         showConfirmButton: false,
         timer: 1500,
       });
+      refetch(); // Refetch the meals after a successful mutation
     },
   });
+  // useEffect(() => {
+  //   UpcomingMeal.forEach(meal => {
+  //     if (meal.like === 10) {
+  //       handleSubmit(meal);
+  //     }
+  //   });
+  // }, [UpcomingMeal]);
 
   const handleSubmit = async meal => {
     try {
@@ -102,7 +112,7 @@ const UpMeals = () => {
               </tr>
             </thead>
             <tbody>
-              {meals.map((item, index) => (
+              {UpcomingMeal.map((item, index) => (
                 <tr key={item._id}>
                   <th>{index + 1}</th>
                   <td>

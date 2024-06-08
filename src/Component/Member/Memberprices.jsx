@@ -62,7 +62,7 @@ const Memberprices = () => {
                     </li>
                   ))}
                 </ul>
-                <Link to={`/checkout/${pkg._id}`}>
+                <Link to={`/checkout/${pkg.name}`}>
                   <button
                     type="button"
                     className="inline-block px-5 py-3 font-semibold tracking-wider text-center rounded dark:bg-violet-600 dark:text-gray-50"

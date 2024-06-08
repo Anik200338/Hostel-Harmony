@@ -69,7 +69,10 @@ const Mealdetails = () => {
     },
   });
   const handleLike = async () => {
-    if (subscriptionPackage === 'Bronze') {
+    if (
+      subscriptionPackage === 'Bronze' ||
+      subscriptionPackage === 'default-badge'
+    ) {
       toast.error('Please buy a subscription first!');
       return;
     }
@@ -89,7 +92,10 @@ const Mealdetails = () => {
   };
   const handleReviewSubmit = async e => {
     e.preventDefault();
-    if (subscriptionPackage === 'Bronze') {
+    if (
+      subscriptionPackage === 'Bronze' ||
+      subscriptionPackage === 'default-badge'
+    ) {
       toast.error('Please buy a subscription first!'); // Show toast notification
       return;
     }
@@ -115,7 +121,10 @@ const Mealdetails = () => {
     }
   };
   const handleMealRequest = async () => {
-    if (subscriptionPackage === 'Bronze') {
+    if (
+      subscriptionPackage === 'Bronze' ||
+      subscriptionPackage === 'default-badge'
+    ) {
       toast.error('Please buy a subscription first!'); // Show toast notification
       return;
     }

@@ -47,7 +47,7 @@ const Register = () => {
             email: data.email,
             badge: 'Bronze',
           };
-          axiosPublic.post('/users', userInfo).then(res => {
+          axiosPublic.post('/user', userInfo).then(res => {
             if (res.data.insertedId) {
               console.log('user added to the database');
               toast.success(

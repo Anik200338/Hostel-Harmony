@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaTrashAlt, FaUsers } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../../../Hooks/useAxiosSecure';
@@ -6,10 +6,11 @@ import { useQuery } from '@tanstack/react-query';
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
+  const [search, setSearch] = useState('');
   const { data: users = [], refetch } = useQuery({
-    queryKey: ['users'],
+    queryKey: ['users', search],
     queryFn: async () => {
-      const res = await axiosSecure.get('/users');
+      const res = await axiosSecure.get(`/users?search=${search}`);
       return res.data;
     },
   });
@@ -28,8 +29,25 @@ const ManageUsers = () => {
       }
     });
   };
+  const handleSearch = e => {
+    e.preventDefault();
+    const searchText = e.target.search.value;
+    console.log(e.target.search.value);
+    setSearch(searchText);
+  };
   return (
     <div>
+      <form onSubmit={handleSearch} className="mb-4">
+        <input
+          type="text"
+          placeholder="Type here"
+          name="search"
+          className="input input-bordered w-full max-w-xs mr-2"
+        />
+        <button className="btn" type="submit">
+          Search
+        </button>
+      </form>
       <div className="flex justify-evenly my-4">
         <h2 className="text-3xl">All Users</h2>
         <h2 className="text-3xl">Total Users: {users.length}</h2>
