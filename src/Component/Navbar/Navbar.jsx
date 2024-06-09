@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../Provider/AuthProvider';
+import useAdmin from '../../Hooks/useAdmin';
 
 const Navbar = () => {
   const { logout, user } = useContext(AuthContext);
+  const [isAdmin] = useAdmin();
   const [theme, settheme] = useState(
     () => localStorage.getItem('theme') || 'light'
   );
@@ -176,14 +178,26 @@ const Navbar = () => {
                   className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-60"
                 >
                   <li>{user?.displayName || 'user name not found'}</li>
-                  <li>
-                    <Link
-                      to="dashboard"
-                      className="btn btn-sm  btn-ghost text-lg font-semibold"
-                    >
-                      Dashboard
-                    </Link>
-                  </li>
+                  {user && isAdmin && (
+                    <li>
+                      <Link
+                        to="/dashboard/adminProfile"
+                        className="btn btn-sm  btn-ghost text-lg font-semibold"
+                      >
+                        Dashboard
+                      </Link>
+                    </li>
+                  )}
+                  {user && !isAdmin && (
+                    <li>
+                      <Link
+                        to="/dashboard/userProfile"
+                        className="btn btn-sm  btn-ghost text-lg font-semibold"
+                      >
+                        Dashboard
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <button
                       onClick={logout}

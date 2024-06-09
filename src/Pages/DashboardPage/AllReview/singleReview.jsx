@@ -7,15 +7,20 @@ import Swal from 'sweetalert2';
 const SingleReview = ({ Queries, index }) => {
   const axiosPublic = useAxiosPublic();
   const { review, id, _id } = Queries;
-  const { data: ReviewTitle = {}, isLoading } = useQuery({
+
+  const {
+    data: ReviewTitle = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ['ReviewTitle', id],
     queryFn: async () => {
       const res = await axiosPublic.get(`/ReviewTitle/${id}`);
       return res.data;
     },
   });
+
   const handleDelete = (pop, _id) => {
-    console.log(pop, _id);
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -26,9 +31,12 @@ const SingleReview = ({ Queries, index }) => {
       confirmButtonText: 'Yes, delete it!',
     }).then(result => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/myDelete?pop=${pop}&_id=${_id}`, {
-          method: 'DELETE',
-        })
+        fetch(
+          `https://assignment-12-server-beige-tau.vercel.app/myDelete?pop=${pop}&_id=${_id}`,
+          {
+            method: 'DELETE',
+          }
+        )
           .then(res => res.json())
           .then(data => {
             if (data.deletedCount > 0) {
@@ -38,8 +46,9 @@ const SingleReview = ({ Queries, index }) => {
       }
     });
   };
+
   if (isLoading) return <div>Loading...</div>;
-  console.log(ReviewTitle);
+  if (isError) return <div>Error fetching data</div>;
 
   return (
     <>

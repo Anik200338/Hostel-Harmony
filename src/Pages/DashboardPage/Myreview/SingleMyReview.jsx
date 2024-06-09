@@ -6,14 +6,18 @@ import Swal from 'sweetalert2';
 
 const SingleMyReview = ({ myrev, index }) => {
   const axiosPublic = useAxiosPublic();
-  const { reviewmy, id, _id } = myrev;
-  const { data: MyReviewTitle = {}, isLoading } = useQuery({
+  const { review, id, _id } = myrev;
+
+  // Fetching MyReviewTitle
+  const { data: MyReviewTitle = [], isLoading } = useQuery({
     queryKey: ['MyReviewTitle', id],
     queryFn: async () => {
       const res = await axiosPublic.get(`/MyReviewTitleFor/${id}`);
       return res.data;
     },
   });
+
+  // Function to handle review deletion
   const handleDelete = (cop, _id) => {
     console.log(cop, _id);
     Swal.fire({
@@ -26,9 +30,12 @@ const SingleMyReview = ({ myrev, index }) => {
       confirmButtonText: 'Yes, delete it!',
     }).then(result => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/myDelete?pop=${cop}&_id=${_id}`, {
-          method: 'DELETE',
-        })
+        fetch(
+          `https://assignment-12-server-beige-tau.vercel.app/myDelete?pop=${cop}&_id=${_id}`,
+          {
+            method: 'DELETE',
+          }
+        )
           .then(res => res.json())
           .then(data => {
             if (data.deletedCount > 0) {
@@ -38,15 +45,16 @@ const SingleMyReview = ({ myrev, index }) => {
       }
     });
   };
+
   if (isLoading) return <div>Loading...</div>;
-  console.log(MyReviewTitle);
+
   return (
     <>
       {MyReviewTitle.map(Tmyb => (
         <TmyBody
           key={Tmyb.id}
           Tmyb={Tmyb}
-          reviewmy={reviewmy}
+          reviewmy={review}
           index={index}
           handleDelete={handleDelete}
           cop={_id}

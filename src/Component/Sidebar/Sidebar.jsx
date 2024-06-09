@@ -71,6 +71,21 @@ const Sidebar = () => {
                 <>
                   {/* Admin */}
                   <NavLink
+                    to="adminProfile"
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <BsGraphUp className="w-5 h-5" />
+
+                    <span className="mx-4 font-medium">Admin Profile</span>
+                  </NavLink>
+                  <NavLink
                     to="ManageUsers"
                     end
                     className={({ isActive }) =>
@@ -165,6 +180,20 @@ const Sidebar = () => {
                 <>
                   {/* user */}
                   <NavLink
+                    to="userProfile"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <MdHomeWork className="w-5 h-5" />
+
+                    <span className="mx-4 font-medium">User Profile</span>
+                  </NavLink>
+                  <NavLink
                     to="MyReview"
                     className={({ isActive }) =>
                       `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
@@ -190,7 +219,21 @@ const Sidebar = () => {
                   >
                     <MdHomeWork className="w-5 h-5" />
 
-                    <span className="mx-4 font-medium">RequestedMeals</span>
+                    <span className="mx-4 font-medium">Requested Meals</span>
+                  </NavLink>
+                  <NavLink
+                    to="paymentHistory"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? 'bg-gray-300  text-gray-700'
+                          : 'text-gray-600'
+                      }`
+                    }
+                  >
+                    <MdHomeWork className="w-5 h-5" />
+
+                    <span className="mx-4 font-medium">Payment History</span>
                   </NavLink>
                 </>
               )}

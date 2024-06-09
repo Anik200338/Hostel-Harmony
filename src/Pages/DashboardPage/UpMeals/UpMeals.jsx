@@ -1,15 +1,18 @@
-import { useContext, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 import { IoIosAdd } from 'react-icons/io';
 import { AuthContext } from '../../../Provider/AuthProvider';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import ReactPaginate from 'react-paginate';
 
 const UpMeals = () => {
   const axiosPublic = useAxiosPublic();
+
   const { user } = useContext(AuthContext);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
 
   const {
     data: UpcomingMeal = [],
@@ -19,7 +22,7 @@ const UpMeals = () => {
   } = useQuery({
     queryKey: ['UpcomingMeal'],
     queryFn: async () => {
-      const res = await axiosPublic.get('UpcomingMeal');
+      const res = await axiosPublic.get('/UpcomingMeal');
       return res.data;
     },
   });
@@ -37,16 +40,9 @@ const UpMeals = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      refetch(); // Refetch the meals after a successful mutation
+      refetch();
     },
   });
-  // useEffect(() => {
-  //   UpcomingMeal.forEach(meal => {
-  //     if (meal.like === 10) {
-  //       handleSubmit(meal);
-  //     }
-  //   });
-  // }, [UpcomingMeal]);
 
   const handleSubmit = async meal => {
     try {
@@ -74,12 +70,23 @@ const UpMeals = () => {
     }
   };
 
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading meals</div>;
 
+  const startIndex = currentPage * itemsPerPage;
+  const currentItems = UpcomingMeal.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+  const pageCount = Math.ceil(UpcomingMeal.length / itemsPerPage);
+
   return (
     <div>
-      <div className="hero  bg-gradient-to-r from-[#00C9FF] to-[#92FE9D] h-96 lg:h-72 rounded-lg p-2">
+      <div className="hero bg-gradient-to-r from-[#00C9FF] to-[#92FE9D] h-96 lg:h-72 rounded-lg p-2">
         <div className="hero-content text-center">
           <div className="max-w-md">
             <h1 className="text-2xl font-bold">
@@ -112,9 +119,9 @@ const UpMeals = () => {
               </tr>
             </thead>
             <tbody>
-              {UpcomingMeal.map((item, index) => (
+              {currentItems.map((item, index) => (
                 <tr key={item._id}>
-                  <th>{index + 1}</th>
+                  <th>{index + 1 + currentPage * itemsPerPage}</th>
                   <td>
                     <div className="flex items-center gap-3">
                       <div className="avatar">
@@ -142,6 +149,27 @@ const UpMeals = () => {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="flex justify-center my-4">
+        <ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'...'}
+          breakClassName={'break-me'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={
+            'pagination flex justify-center items-center space-x-2'
+          }
+          previousLinkClassName={'btn btn-primary'}
+          nextLinkClassName={'btn btn-primary'}
+          disabledClassName={'btn-disabled'}
+          activeClassName={'btn-active bg-green-500 text-white'}
+          pageClassName={'btn btn-secondary'}
+          pageLinkClassName={'btn btn-secondary'}
+        />
       </div>
     </div>
   );

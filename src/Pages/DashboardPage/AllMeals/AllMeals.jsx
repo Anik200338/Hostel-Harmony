@@ -1,25 +1,30 @@
-import React, { useState } from 'react';
-import useAxiosPublic from '../../../Hooks/useAxiosPublic';
+import React, { useState, useEffect } from 'react';
+
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import ReactPaginate from 'react-paginate';
+import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 
 const AllMeals = () => {
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const [sortField, setSortField] = useState('like');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
 
   const {
-    data: AllMeals = [],
+    data: AllMealsData = [],
     isLoading,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ['AllMeals', sortField, sortOrder],
+    queryKey: ['AllMeals', sortField, sortOrder, currentPage],
     queryFn: async () => {
-      const res = await axiosPublic.get(
-        `/AllMeals?sortBy=${sortField}&order=${sortOrder}`
+      const res = await axiosSecure.get(
+        `/AllMeals?sortBy=${sortField}&order=${sortOrder}&page=${currentPage}&limit=${itemsPerPage}`
       );
+      console.log('API Response:', res.data); // Log the response data
       return res.data;
     },
   });
@@ -35,28 +40,54 @@ const AllMeals = () => {
       confirmButtonText: 'Yes, delete it!',
     }).then(result => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/myDeleteMeal/${id}`, {
-          method: 'DELETE',
-        })
+        fetch(
+          `https://assignment-12-server-beige-tau.vercel.app/myDeleteMeal/${id}`,
+          {
+            method: 'DELETE',
+          }
+        )
           .then(res => res.json())
           .then(data => {
-            if (data.deletedCount > 0) {
+            console.log('Delete Response:', data); // Log the response to understand its structure
+
+            // Check for a successful deletion
+            if (data.deletedCount > 0 || data.acknowledged) {
               Swal.fire('Deleted!', 'Your meal has been deleted.', 'success');
               refetch();
+            } else {
+              Swal.fire('Error!', 'Failed to delete the meal.', 'error');
             }
+          })
+          .catch(error => {
+            console.error('Error deleting meal:', error);
+            Swal.fire(
+              'Error!',
+              'An error occurred while deleting the meal.',
+              'error'
+            );
           });
       }
     });
   };
 
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching data</div>;
+
+  // Calculate the current items for the current page
+  const offset = currentPage * itemsPerPage;
+  const currentItems = AllMealsData.slice(offset, offset + itemsPerPage);
+
+  console.log('Current Meals:', currentItems); // Log the current meals data
 
   return (
     <div>
       <div className="flex justify-between my-4">
         <h2 className="text-3xl">All Meals</h2>
-        <h2 className="text-3xl">Total Meals: {AllMeals.length}</h2>
+        <h2 className="text-3xl">Total Meals: {AllMealsData.length}</h2>
       </div>
       <div className="flex justify-end my-4">
         <select
@@ -89,34 +120,56 @@ const AllMeals = () => {
             </tr>
           </thead>
           <tbody>
-            {AllMeals.map((meal, index) => (
-              <tr key={meal._id}>
-                <th>{index + 1}</th>
-                <td>{meal.title}</td>
-                <td>{meal.like}</td>
-                <td>{meal.review}</td>
-                <td>{meal.admin?.name || 'Unknown Admin'}</td>
-                <td>
-                  <Link to={`allMealsUpdate/${meal._id}`}>
-                    <button className="btn btn-accent">Update</button>
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(meal._id)}
-                    className="btn btn-error ml-2"
-                  >
-                    Delete
-                  </button>
-                  <Link to={`/mealDetails/${meal._id}`}>
-                    <button className="btn btn-accent ml-2">
-                      View Details
+            {currentItems.length > 0 ? (
+              currentItems.map((meal, index) => (
+                <tr key={meal._id}>
+                  <th>{index + 1 + offset}</th>
+                  <td>{meal.title}</td>
+                  <td>{meal.like}</td>
+                  <td>{meal.review}</td>
+                  <td>{meal.admin?.name || 'Unknown Admin'}</td>
+                  <td>
+                    <Link to={`allMealsUpdate/${meal._id}`}>
+                      <button className="btn btn-accent">Update</button>
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(meal._id)}
+                      className="btn btn-error ml-2"
+                    >
+                      Delete
                     </button>
-                  </Link>
+                    <Link to={`/mealDetails/${meal._id}`}>
+                      <button className="btn btn-accent ml-2">
+                        View Details
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center">
+                  No meals found
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
+      <ReactPaginate
+        previousLabel={'Previous'}
+        nextLabel={'Next'}
+        breakLabel={'...'}
+        breakClassName={'break-me'}
+        pageCount={Math.ceil(AllMealsData.length / itemsPerPage)}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        subContainerClassName={'pages pagination'}
+        activeClassName={'active '}
+        className="flex justify-between "
+      />
     </div>
   );
 };

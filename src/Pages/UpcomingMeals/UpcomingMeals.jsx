@@ -4,13 +4,18 @@ import UpcomingCard from '../../Component/UpcomingCard/UpcomingCard';
 
 const UpcomingMeals = () => {
   const axiosPublic = useAxiosPublic();
-  const { data: UpcomingMeal = [], refetch } = useQuery({
+  const {
+    data: UpcomingMeal = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ['UpcomingMeal'],
     queryFn: async () => {
       const res = await axiosPublic.get('/UpcomingMeal');
       return res.data;
     },
   });
+  if (isLoading) return <div>Loading...</div>;
   console.log(UpcomingMeal);
 
   return (

@@ -13,7 +13,9 @@ const AllMealsUpdate = () => {
   }`;
 
   useEffect(() => {
-    fetch(`http://localhost:5000/UpdateDetailsMeal/${id}`)
+    fetch(
+      `https://assignment-12-server-beige-tau.vercel.app/UpdateDetailsMeal/${id}`
+    )
       .then(res => res.json())
       .then(data => {
         setCraft(data);
@@ -45,13 +47,16 @@ const AllMealsUpdate = () => {
           review: 0,
         };
 
-        const result = await fetch(`http://localhost:5000/updateMeal/${id}`, {
-          method: 'PUT',
-          headers: {
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify(mealItem),
-        }).then(res => res.json());
+        const result = await fetch(
+          `https://assignment-12-server-beige-tau.vercel.app/updateMeal/${id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify(mealItem),
+          }
+        ).then(res => res.json());
 
         if (result.modifiedCount > 0) {
           Swal.fire({

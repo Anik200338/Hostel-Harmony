@@ -23,6 +23,11 @@ import ManageUsers from '../Pages/DashboardPage/UpMeals/ManageUsers/ManageUsers'
 import Checkout from '../Component/Checkout/Checkout';
 import AllMeals from '../Pages/DashboardPage/AllMeals/AllMeals';
 import AllMealsUpdate from '../Component/allMealsUpdate/AllMealsUpdate';
+import AdminProfile from '../Pages/DashboardPage/AdminProfile/AdminProfile';
+import UserProfile from '../Pages/DashboardPage/UserProfile/UserProfile';
+import PHistory from '../Pages/DashboardPage/PHistory/PHistory';
+import PrivateRoute from './Private/PrivateRoute';
+import AdminRoute from './AdminRoute/AdminRoute';
 
 const router = createBrowserRouter([
   {
@@ -44,71 +49,172 @@ const router = createBrowserRouter([
       },
       {
         path: '/mealDetails/:id',
-        element: <Mealdetails></Mealdetails>,
+        element: (
+          <PrivateRoute>
+            <Mealdetails></Mealdetails>
+          </PrivateRoute>
+        ),
       },
       {
         path: '/checkout/:id',
-        element: <Checkout></Checkout>,
+        element: (
+          <PrivateRoute>
+            <Checkout></Checkout>
+          </PrivateRoute>
+        ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/singlePack/${params.id}`),
+          fetch(
+            `https://assignment-12-server-beige-tau.vercel.app/singlePack/${params.id}`
+          ),
+      },
+      {
+        path: 'login',
+        element: <Login></Login>,
+      },
+      {
+        path: 'register',
+        element: <Register></Register>,
       },
     ],
   },
-  {
-    path: '/login',
-    element: <Login></Login>,
-  },
-  {
-    path: '/register',
-    element: <Register></Register>,
-  },
+
   {
     path: '/dashboard',
-    element: <Dashboard></Dashboard>,
+    element: (
+      <PrivateRoute>
+        <Dashboard></Dashboard>
+      </PrivateRoute>
+    ),
     children: [
       {
         path: 'ManageUsers',
-        element: <ManageUsers></ManageUsers>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <ManageUsers></ManageUsers>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: 'addMeal',
-        element: <AddMeal></AddMeal>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AddMeal></AddMeal>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: '/dashboard/upmeals/addUpcomingMeal',
-        element: <AddUpcoming></AddUpcoming>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AddUpcoming></AddUpcoming>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: 'upmeals',
-        element: <UpMeals></UpMeals>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <UpMeals></UpMeals>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: 'AllReview',
-        element: <AllReview></AllReview>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllReview></AllReview>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: 'MyReview',
-        element: <Myreview></Myreview>,
+        element: (
+          <PrivateRoute>
+            <Myreview></Myreview>
+          </PrivateRoute>
+        ),
       },
       {
         path: '/dashboard/MyReview/UpdateReview/:id',
-        element: <UpdateReview></UpdateReview>,
+        element: (
+          <PrivateRoute>
+            <UpdateReview></UpdateReview>
+          </PrivateRoute>
+        ),
       },
       {
         path: 'ServeMeals',
-        element: <ServeMeals></ServeMeals>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <ServeMeals></ServeMeals>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: 'RequestedMeals',
-        element: <RequestedMeals></RequestedMeals>,
+        element: (
+          <PrivateRoute>
+            <RequestedMeals></RequestedMeals>
+          </PrivateRoute>
+        ),
       },
       {
         path: 'allMeals',
-        element: <AllMeals></AllMeals>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllMeals></AllMeals>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'adminProfile',
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AdminProfile></AdminProfile>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'userProfile',
+        element: (
+          <PrivateRoute>
+            <UserProfile></UserProfile>
+          </PrivateRoute>
+        ),
       },
       {
         path: '/dashboard/allMeals/allMealsUpdate/:id',
-        element: <AllMealsUpdate></AllMealsUpdate>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllMealsUpdate></AllMealsUpdate>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'paymentHistory',
+        element: (
+          <PrivateRoute>
+            <PHistory></PHistory>
+          </PrivateRoute>
+        ),
       },
     ],
   },

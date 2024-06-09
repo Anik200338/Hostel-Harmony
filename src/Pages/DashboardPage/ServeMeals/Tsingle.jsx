@@ -1,7 +1,7 @@
 import React from 'react';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 
-const Tsingle = ({ Tmyb, status, index, handleDelete, cop, User }) => {
+const Tsingle = ({ Tmyb, status, index, cop, User }) => {
   const { title, _id, review } = Tmyb;
   const axiosPublic = useAxiosPublic();
 
@@ -14,24 +14,24 @@ const Tsingle = ({ Tmyb, status, index, handleDelete, cop, User }) => {
       console.error('Error updating status:', error);
     }
   };
+
+  const handleDelete = async (cop, _id) => {
+    try {
+      await axiosPublic.delete(`/deleteMeal/${cop}/${_id}`);
+    } catch (error) {
+      console.error('Error deleting meal:', error);
+    }
+  };
+
   return (
     <tbody>
-      {/* row 1 */}
       <tr>
-        <td>
-          <div className="flex items-center gap-3">
-            <div className="avatar">
-              <th>{index + 1}</th>
-            </div>
-            <div>
-              <div className="font-bold">{status}</div>
-            </div>
-          </div>
-        </td>
+        <td>{index + 1}</td>
+        <td>{status}</td>
         <td>{title}</td>
         <td>{User}</td>
         <td>{review}</td>
-        <th>
+        <td>
           <button
             className="btn btn-accent"
             onClick={handleServe}
@@ -39,20 +39,15 @@ const Tsingle = ({ Tmyb, status, index, handleDelete, cop, User }) => {
           >
             {status === 'delivered' ? 'Delivered' : 'Serve'}
           </button>
-        </th>
-        <th>
+        </td>
+        <td>
           <button
             onClick={() => handleDelete(cop, _id)}
             className="btn btn-error"
           >
             Delete
           </button>
-        </th>
-        {/* <th>
-          <Link to={`UpdateReview/${cop}`}>
-            <button className="btn btn-warning">Update</button>
-          </Link>
-        </th> */}
+        </td>
       </tr>
     </tbody>
   );
