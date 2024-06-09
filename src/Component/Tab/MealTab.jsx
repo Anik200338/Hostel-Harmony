@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import useAxiosPublic from '../../Hooks/useAxiosPublic';
@@ -16,61 +15,55 @@ const MealTab = () => {
       return res.data;
     },
   });
-  console.log(mealTab);
+
   if (isLoading) return <div>Loading...</div>;
-  const Breakfast = mealTab?.filter(item => item.category === 'Breakfast');
-  const Lunch = mealTab?.filter(item => item.category === 'Lunch');
-  const Dinner = mealTab?.filter(item => item.category === 'Dinner');
+
+  const Breakfast = mealTab
+    ?.filter(item => item.category === 'Breakfast')
+    .slice(0, 6);
+  const Lunch = mealTab?.filter(item => item.category === 'Lunch').slice(0, 6);
+  const Dinner = mealTab
+    ?.filter(item => item.category === 'Dinner')
+    .slice(0, 6);
+  const AllMeals = mealTab.slice(0, 6);
+
   return (
     <div>
+      <div className="my-20 text-center font-bold text-4xl">
+        <h2>Meals by Category</h2>
+      </div>
       <Tabs selectedIndex={tabIndex} onSelect={index => setTabIndex(index)}>
-        <TabList>
+        <TabList className="flex justify-center space-x-4 bg-yellow-200 font-bold">
           <Tab>Breakfast</Tab>
-          <Tab> Lunch</Tab>
+          <Tab>Lunch</Tab>
           <Tab>Dinner</Tab>
-          <Tab> All</Tab>
+          <Tab>All</Tab>
         </TabList>
 
         <TabPanel>
-          <div
-            className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20"
-            // data-aos="fade-down-right"
-          >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20">
             {Breakfast.map(item => (
               <Tabcard key={item.id} item={item} />
             ))}
           </div>
-          <h2>{Breakfast.length}</h2>
         </TabPanel>
         <TabPanel>
-          <h2>{Lunch.length}</h2>
-          <div
-            className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20"
-            // data-aos="fade-down-right"
-          >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20">
             {Lunch.map(item => (
               <Tabcard key={item.id} item={item} />
             ))}
           </div>
         </TabPanel>
         <TabPanel>
-          <h2>{Dinner.length}</h2>
-          <div
-            className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20"
-            // data-aos="fade-down-right"
-          >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20">
             {Dinner.map(item => (
               <Tabcard key={item.id} item={item} />
             ))}
           </div>
         </TabPanel>
         <TabPanel>
-          <h2>{mealTab.length}</h2>
-          <div
-            className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20"
-            // data-aos="fade-down-right"
-          >
-            {mealTab.map(item => (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20">
+            {AllMeals.map(item => (
               <Tabcard key={item.id} item={item} />
             ))}
           </div>

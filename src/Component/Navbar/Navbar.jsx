@@ -2,6 +2,9 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../Provider/AuthProvider';
 import useAdmin from '../../Hooks/useAdmin';
+import Lottie from 'lottie-react';
+import faq from '../../../public/faq.json';
+import { IoNotifications } from 'react-icons/io5';
 
 const Navbar = () => {
   const { logout, user } = useContext(AuthContext);
@@ -51,36 +54,19 @@ const Navbar = () => {
       ) : (
         <></>
       )}
-      {user ? (
-        <li>
-          <NavLink
-            to="/myQueries"
-            className={({ isActive }) => (isActive ? 'font-bold ' : ' ')}
-          >
-            {' '}
-            MyQueries
-          </NavLink>
-        </li>
-      ) : (
-        <></>
-      )}
-      {user ? (
-        <li>
-          <NavLink
-            to="/myreccomendetion"
-            className={({ isActive }) => (isActive ? 'font-bold' : '')}
-          >
-            {' '}
-            Myrecommendations
-          </NavLink>
-        </li>
-      ) : (
-        <></>
-      )}
+      <li>
+        <NavLink
+          to="/"
+          className={({ isActive }) => (isActive ? 'font-bold' : '')}
+        >
+          {' '}
+          <IoNotifications className="lg:text-xl" />
+        </NavLink>
+      </li>
     </>
   );
   return (
-    <div className="navbar bg-base-100 h-2 shadow-2xl px-4 fixed  z-10 ">
+    <div className="navbar h-2 shadow-2xl px-4 fixed  bg-yellow-100   z-10 ">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -118,11 +104,11 @@ const Navbar = () => {
         </div>
         <Link
           to="/"
-          className="btn btn-ghost text-lg lg:text-xl  font-extrabold text-[#1CB5E0]"
+          className="btn btn-ghost text-lg lg:text-xl  font-extrabold text-yellow-500"
         >
           {' '}
-          {/* <Lottie animationData={faq} className="h-10 " /> */}
-          QuerySay
+          <Lottie animationData={faq} className="h-11 " />
+          Hostel Harmony
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -142,7 +128,7 @@ const Navbar = () => {
 
           {/* sun icon */}
           <svg
-            className="swap-off text-info fill-current w-10 h-10"
+            className="swap-off text-yellow-500 fill-current w-10 h-10"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
           >
@@ -151,7 +137,7 @@ const Navbar = () => {
 
           {/* moon icon */}
           <svg
-            className="swap-on text-info fill-current w-10 h-10"
+            className="swap-on text-yellow-500 fill-current w-10 h-10"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
           >
@@ -162,7 +148,7 @@ const Navbar = () => {
           <div>
             <button>
               {' '}
-              <div className="dropdown dropdown-click dropdown-end">
+              <div className="dropdown dropdown-hover dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                   <div className="w-16 rounded-full ">
                     <img
