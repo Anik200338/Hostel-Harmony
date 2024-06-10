@@ -3,10 +3,10 @@ import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 import { useQuery } from '@tanstack/react-query';
 import Tsingle from './Tsingle';
 
-const SingleServeMeals = ({ Queries, index }) => {
+const SingleServeMeals = ({ Queries, index, refetch }) => {
   const axiosPublic = useAxiosPublic();
   const { status, id, _id, User } = Queries;
-  const { email } = User;
+  const { email, Name } = User;
 
   const { data: singlereq = [], isLoading } = useQuery({
     queryKey: ['singlereq', id],
@@ -28,6 +28,8 @@ const SingleServeMeals = ({ Queries, index }) => {
           index={index}
           cop={_id}
           User={email}
+          Name={Name}
+          refetch={refetch}
         />
       ))}
     </>

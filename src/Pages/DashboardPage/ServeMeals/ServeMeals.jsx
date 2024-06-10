@@ -1,16 +1,16 @@
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../../Provider/AuthProvider';
+import { useState } from 'react';
+
 import { useQuery } from '@tanstack/react-query';
 import SingleServeMeals from './SingleServeMeals';
-import ReactPaginate from 'react-paginate';
+
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import Pagination from '../../../Component/common/Pagination';
 
 const ServeMeals = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useContext(AuthContext);
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 1;
 
   const {
     data: ServeMeals = [],
@@ -34,7 +34,7 @@ const ServeMeals = () => {
     refetch();
   };
 
-  const handlePageClick = ({ selected }) => {
+  const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
 
@@ -59,42 +59,24 @@ const ServeMeals = () => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Status</th>
             <th>Title</th>
-            <th>User</th>
-            <th>Review</th>
-            <th>Actions</th>
-            <th>Delete</th>
+            <th>Email</th>
+            <th>name</th>
+            <th>Status</th>
+            <th> serve button.</th>
           </tr>
         </thead>
         {currentItems.map((Queries, index) => (
           <SingleServeMeals
             key={Queries.id}
             Queries={Queries}
-            index={index + startIndex} // Adjust the index to match the current page
+            index={index + startIndex}
+            refetch={refetch}
           />
         ))}
       </table>
-      <div className="flex justify-center my-4">
-        <ReactPaginate
-          previousLabel={'Previous'}
-          nextLabel={'Next'}
-          breakLabel={'...'}
-          breakClassName={'break-me'}
-          pageCount={pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={handlePageClick}
-          containerClassName={
-            'pagination flex justify-center items-center space-x-2'
-          }
-          previousLinkClassName={'btn btn-primary'}
-          nextLinkClassName={'btn btn-primary'}
-          disabledClassName={'btn-disabled'}
-          activeClassName={'bg-blue-500 text-white rounded-full'}
-          pageClassName={'btn btn-secondary'}
-          pageLinkClassName={'btn btn-secondary'}
-        />
+      <div className=" absolute inset-x-0 lg:left-1/4 bottom-0 mb-5">
+        <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
       </div>
     </div>
   );

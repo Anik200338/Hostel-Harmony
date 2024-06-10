@@ -34,7 +34,6 @@ const UpMeals = () => {
     },
     onSuccess: () => {
       Swal.fire({
-        position: 'top-end',
         icon: 'success',
         title: 'Meal is added to the menu.',
         showConfirmButton: false,
@@ -115,7 +114,7 @@ const UpMeals = () => {
                 <th>Image</th>
                 <th>Name</th>
                 <th>Price</th>
-                <th>Action</th>
+                <th>Add to meals collection</th>
               </tr>
             </thead>
             <tbody>

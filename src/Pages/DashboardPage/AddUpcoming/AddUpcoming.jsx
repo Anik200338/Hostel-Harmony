@@ -1,27 +1,22 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import { FaUtensils } from 'react-icons/fa';
 import { AuthContext } from '../../../Provider/AuthProvider';
-import { useContext } from 'react';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
-
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
-
 import Swal from 'sweetalert2';
 import { useMutation } from '@tanstack/react-query';
-// import Swal from 'sweetalert2';
 
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${
   import.meta.env.VITE_IMAGE_HOSTING_KEY
 }`;
-console.log(image_hosting_api);
 
 const AddUpcoming = () => {
   const { user, setLoading } = useContext(AuthContext);
   const { register, handleSubmit } = useForm();
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
+  const [isSubmitting, setIsSubmitting] = useState(false); // State for loading button
 
   const { mutateAsync } = useMutation({
     mutationFn: async mealItem => {
@@ -29,69 +24,69 @@ const AddUpcoming = () => {
       return data;
     },
     onSuccess: () => {
-      console.log('Data Saved Successfully');
       Swal.fire({
-        position: 'top-end',
         icon: 'success',
-        title: `is added to the menu.`,
+        title: 'Upcoming meal added to the menu.',
         showConfirmButton: false,
         timer: 1500,
       });
       setLoading(false);
+      setIsSubmitting(false); // Reset loading state after success
+    },
+    onError: error => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error adding upcoming meal',
+        text: error.message,
+      });
+      setLoading(false);
+      setIsSubmitting(false); // Reset loading state after error
     },
   });
+
   const onSubmit = async data => {
-    console.log(data);
-    // image upload to imgbb and then get an url
-    const imageFile = { image: data.image[0] };
-    const res = await axiosPublic.post(image_hosting_api, imageFile, {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    });
-    console.log(res.data);
-    // if (res.data.success) {
-    // now send the menu item data to the server with the image url
+    setIsSubmitting(true); // Set loading state to true on form submission
     try {
-      const mealItem = {
-        title: data.title,
-        category: data.category,
-        image: res.data.data.display_url,
-        ingredients: data.ingredients,
-        description: data.description,
-        price: parseFloat(data.price),
-        rating: parseFloat(data.rating),
-        postTime: new Date().toLocaleString(),
-        like: 0,
-        review: 0,
-        admin: {
-          name: user?.displayName,
-          image: user?.photoURL,
-          email: user?.email,
+      const imageFile = { image: data.image[0] };
+      const res = await axiosPublic.post(image_hosting_api, imageFile, {
+        headers: {
+          'content-type': 'multipart/form-data',
         },
-      };
-      console.log(mealItem);
-      await mutateAsync(mealItem);
+      });
+
+      if (res.data.success) {
+        const mealItem = {
+          title: data.title,
+          category: data.category,
+          image: res.data.data.display_url,
+          ingredients: data.ingredients,
+          description: data.description,
+          price: parseFloat(data.price),
+          rating: parseFloat(data.rating),
+          postTime: new Date().toLocaleString(),
+          like: 0,
+          review: 0,
+          admin: {
+            name: user?.displayName,
+            image: user?.photoURL,
+            email: user?.email,
+          },
+        };
+        await mutateAsync(mealItem);
+      } else {
+        throw new Error('Image upload failed');
+      }
     } catch (err) {
-      console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error uploading image',
+        text: err.message,
+      });
       setLoading(false);
+      setIsSubmitting(false); // Reset loading state after error
     }
-    // const menuRes = await axiosSecure.post('/menu', menuItem);
-    // console.log(menuRes.data);
-    // if (menuRes.data.insertedId) {
-    //   // show success popup
-    //   reset();
-    //   Swal.fire({
-    //     position: 'top-end',
-    //     icon: 'success',
-    //     title: `${data.name} is added to the menu.`,
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //   });
-    // }
-    // }
-    // console.log('with image url', res.data);
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="form-control w-full my-6">
@@ -179,8 +174,9 @@ const AddUpcoming = () => {
           className="file-input w-full max-w-xs"
         />
       </div>
-      <button className="btn">
-        Add Meal <FaUtensils className="ml-4"></FaUtensils>
+      <button className="btn btn-warning w-full" disabled={isSubmitting}>
+        {isSubmitting ? 'Adding...' : 'Add upcoming Meal'}{' '}
+        <FaUtensils className="ml-4"></FaUtensils>
       </button>
     </form>
   );

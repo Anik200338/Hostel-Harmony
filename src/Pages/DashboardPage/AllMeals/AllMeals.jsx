@@ -80,7 +80,7 @@ const AllMeals = () => {
   const currentMeals = AllMealsData.slice(offset, offset + itemsPerPage);
 
   return (
-    <div>
+    <div className="relative h-[1000px]">
       <div className="flex justify-between my-4">
         <h2 className="text-3xl">All Meals</h2>
         <h2 className="text-3xl">Total Meals: {AllMealsData.length}</h2>
@@ -158,7 +158,7 @@ const AllMeals = () => {
           </tbody>
         </table>
       </div>
-      <div className="absolute inset-x-0 lg:left-1/4 bottom-0 mb-5">
+      <div className="absolute inset-x-0 lg:left-1/5 bottom-0 mb-5">
         <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
       </div>
     </div>

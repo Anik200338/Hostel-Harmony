@@ -34,30 +34,32 @@ const AllReview = () => {
   };
 
   return (
-    <div className="mb-10  overflow-x-auto">
-      <table className="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Title</th>
-            <th>reviews</th>
-            <th>likes</th>
-            <th>reviews count</th>
-            <th>Delete</th>
-            <th>meal Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentReviews.map((Queries, index) => (
-            <SingleReview
-              key={Queries.id}
-              Queries={Queries}
-              index={index + offset}
-              refetch={refetch}
-            />
-          ))}
-        </tbody>
-      </table>
+    <div className="">
+      <div className="mb-10  overflow-x-auto">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>reviews</th>
+              <th>likes</th>
+              <th>reviews count</th>
+              <th>Delete</th>
+              <th>meal Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentReviews.map((Queries, index) => (
+              <SingleReview
+                key={Queries.id}
+                Queries={Queries}
+                index={index + offset}
+                refetch={refetch}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div className="absolute inset-x-0 lg:left-1/4 bottom-0 mb-5">
         <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
       </div>

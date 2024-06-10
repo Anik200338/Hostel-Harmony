@@ -1,8 +1,8 @@
 import React from 'react';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 
-const Tsingle = ({ Tmyb, status, index, cop, User }) => {
-  const { title, _id, review } = Tmyb;
+const Tsingle = ({ Tmyb, status, index, cop, User, refetch, Name }) => {
+  const { title } = Tmyb;
   const axiosPublic = useAxiosPublic();
 
   const handleServe = async () => {
@@ -10,16 +10,9 @@ const Tsingle = ({ Tmyb, status, index, cop, User }) => {
       await axiosPublic.post(`/updateStatus/${cop}`, {
         status: 'delivered',
       });
+      refetch();
     } catch (error) {
       console.error('Error updating status:', error);
-    }
-  };
-
-  const handleDelete = async (cop, _id) => {
-    try {
-      await axiosPublic.delete(`/deleteMeal/${cop}/${_id}`);
-    } catch (error) {
-      console.error('Error deleting meal:', error);
     }
   };
 
@@ -27,10 +20,10 @@ const Tsingle = ({ Tmyb, status, index, cop, User }) => {
     <tbody>
       <tr>
         <td>{index + 1}</td>
-        <td>{status}</td>
         <td>{title}</td>
         <td>{User}</td>
-        <td>{review}</td>
+        <td>{Name}</td>
+        <td>{status}</td>
         <td>
           <button
             className="btn btn-accent"
@@ -38,14 +31,6 @@ const Tsingle = ({ Tmyb, status, index, cop, User }) => {
             disabled={status === 'delivered'}
           >
             {status === 'delivered' ? 'Delivered' : 'Serve'}
-          </button>
-        </td>
-        <td>
-          <button
-            onClick={() => handleDelete(cop, _id)}
-            className="btn btn-error"
-          >
-            Delete
           </button>
         </td>
       </tr>
