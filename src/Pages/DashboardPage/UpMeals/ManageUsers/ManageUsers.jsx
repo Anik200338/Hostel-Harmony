@@ -44,7 +44,7 @@ const ManageUsers = () => {
           name="search"
           className="input input-bordered w-full max-w-xs mr-2"
         />
-        <button className="btn" type="submit">
+        <button className="btn btn-warning" type="submit">
           Search
         </button>
       </form>
@@ -58,10 +58,10 @@ const ManageUsers = () => {
           <thead>
             <tr>
               <th></th>
-              <th>Name</th>
+              <th>Username</th>
               <th>Email</th>
-              <th>Role</th>
-              <th>Action</th>
+              <th>make admin</th>
+              <th> subscription status</th>
             </tr>
           </thead>
           <tbody>
@@ -85,6 +85,7 @@ const ManageUsers = () => {
                     </button>
                   )}
                 </td>
+                <td>{user.badge}</td>
               </tr>
             ))}
           </tbody>

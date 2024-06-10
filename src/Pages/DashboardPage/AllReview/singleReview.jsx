@@ -4,7 +4,7 @@ import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 import Tbody from './Tbody';
 import Swal from 'sweetalert2';
 
-const SingleReview = ({ Queries, index }) => {
+const SingleReview = ({ Queries, index, refetch }) => {
   const axiosPublic = useAxiosPublic();
   const { review, id, _id } = Queries;
 
@@ -40,8 +40,9 @@ const SingleReview = ({ Queries, index }) => {
           .then(res => res.json())
           .then(data => {
             if (data.deletedCount > 0) {
-              Swal.fire('Deleted!', 'Your card has been deleted.', 'success');
+              Swal.fire('Deleted!', 'Review has been deleted.', 'success');
             }
+            refetch();
           });
       }
     });
