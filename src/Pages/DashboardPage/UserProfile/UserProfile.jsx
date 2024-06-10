@@ -34,7 +34,7 @@ const UserProfile = () => {
       <div className="bg-white shadow-lg rounded-2xl w-3/5">
         <img
           alt="profile"
-          src="https://wallpapercave.com/wp/wp10784415.jpg"
+          src="https://i.ibb.co/w0L2yxt/2147951284.jpg"
           className="w-full mb-4 rounded-t-lg h-36"
         />
         <div className="flex flex-col items-center justify-center p-4 -mt-16">
@@ -46,7 +46,7 @@ const UserProfile = () => {
             />
           </a>
 
-          <p className="p-2 uppercase px-4 text-xs text-white bg-pink-500 rounded-full">
+          <p className="p-2 uppercase px-4 text-xs text-white bg-yellow-500 rounded-full">
             {adminProfile.role}
           </p>
           <p className="mt-2 text-xl font-medium text-gray-800">

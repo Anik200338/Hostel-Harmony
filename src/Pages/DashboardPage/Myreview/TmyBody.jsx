@@ -2,14 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const TmyBody = ({ Tmyb, reviewmy, index, handleDelete, cop }) => {
-  const { title, _id, review } = Tmyb;
+  const { title, _id, review, like } = Tmyb;
 
   return (
     <tr>
       <td>{index + 1}</td>
-      <td>{reviewmy}</td>
       <td>{title}</td>
-      <td>{cop}</td>
+      <td>{reviewmy}</td>
+      <td>{like}</td>
       <td>{review}</td>
       <td>
         <div className="card-actions justify-between">
