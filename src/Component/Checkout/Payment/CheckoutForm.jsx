@@ -15,13 +15,13 @@ const CheckoutForm = ({ singlePack }) => {
   const { price, _id } = singlePack;
 
   useEffect(() => {
-    if (clientSecret.length == 0) {
+    if (clientSecret.length === 0) {
       axiosSecure.post('/create-payment-intent', { price: price }).then(res => {
         console.log(res.data.clientSecret);
         setClientSecret(res.data.clientSecret);
       });
     }
-  }, [axiosSecure]);
+  }, [axiosSecure, price, clientSecret]);
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -61,7 +61,8 @@ const CheckoutForm = ({ singlePack }) => {
       });
 
     if (confirmError) {
-      console.log('confirm error');
+      console.log('confirm error', confirmError);
+      setError(confirmError.message);
     } else {
       console.log('payment intent', paymentIntent);
       if (paymentIntent.status === 'succeeded') {
@@ -80,12 +81,12 @@ const CheckoutForm = ({ singlePack }) => {
         const res = await axiosSecure.post('/payments', payment);
         console.log('payment saved', res.data);
         if (res.data?.paymentResult?.insertedId) {
+          // Show a confirmation modal
           Swal.fire({
-            position: 'top-end',
+            title: 'Payment Successful',
+            text: `Your payment of ${price} was successful! Your transaction id is ${paymentIntent.id}`,
             icon: 'success',
-            title: 'Thank you for the taka paisa',
-            showConfirmButton: false,
-            timer: 1500,
+            confirmButtonText: 'OK',
           });
         }
       }
@@ -115,7 +116,7 @@ const CheckoutForm = ({ singlePack }) => {
         type="submit"
         disabled={!stripe || !clientSecret}
       >
-        Pay:{price}
+        Pay: {price}
       </button>
       <p className="text-red-600">{error}</p>
       {transactionId && (
