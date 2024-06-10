@@ -86,7 +86,7 @@ const UpcomingCard = ({ UpcomingSingle, refetch }) => {
   };
 
   return (
-    <div className="card card-compact rounded-md h-[400px] w-[350px] bg-base-100 shadow-gray-500 shadow-2xl">
+    <div className="card card-compact rounded-md h-[400px] w-[350px] bg-base-100 shadow-yellow-500 shadow-2xl">
       <figure className="h-[200px]">
         <img src={image} alt="Shoes" />
       </figure>

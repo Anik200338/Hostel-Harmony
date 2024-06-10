@@ -116,6 +116,7 @@ const Mealdetails = () => {
       setReview('');
       refetch(); // Refetch the data after submitting a review
       AllReviewrefetch(); // Refetch the data after submitting a review
+      toast.success('Review submitted successfully!');
     } catch (error) {
       console.error('Error submitting the review:', error);
     }
@@ -138,7 +139,7 @@ const Mealdetails = () => {
         },
       };
       await axiosPublic.post(`/requestMeal/${id}`, requestPayload);
-      alert('Meal request submitted successfully!');
+      toast.success('Meal request submitted successfully!');
     } catch (error) {
       console.error('Error requesting the meal:', error);
     }
@@ -187,6 +188,17 @@ const Mealdetails = () => {
                 ) : (
                   <p>Please wait...</p>
                 )}
+              </div>
+              <div className="flex items-center gap-5">
+                <div className="avatar  gap-5 items-center ">
+                  <div className="w-11 rounded-full ">
+                    <img src={singleMeal.admin.image} />
+                  </div>
+                </div>
+                <div className="">
+                  <h2>{singleMeal.admin.name}</h2>
+                  <h2>{singleMeal.admin.email}</h2>
+                </div>
               </div>
             </div>
           </div>

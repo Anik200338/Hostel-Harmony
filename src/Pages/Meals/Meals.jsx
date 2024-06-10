@@ -22,7 +22,7 @@ const Meals = () => {
       } else {
         setMeals(prevMeals => [...prevMeals, ...res.data]);
       }
-      if (res.data.length === 0 || res.data.length < 10) {
+      if (res.data.length === 0) {
         setHasMore(false);
       }
     } catch (error) {
@@ -61,18 +61,18 @@ const Meals = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <form onSubmit={handleSearch} className="mb-4">
+      <form onSubmit={handleSearch} className="mb-4 flex justify-center">
         <input
           type="text"
-          placeholder="Type here"
+          placeholder="Search here..."
           name="search"
           className="input input-bordered w-full max-w-xs mr-2"
         />
-        <button className="btn" type="submit">
+        <button className="btn btn-warning" type="submit">
           Search
         </button>
       </form>
-      <div className="flex mb-4">
+      <div className="flex mb-4 justify-center">
         <select
           onChange={handleCategoryChange}
           value={category}
