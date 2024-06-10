@@ -1,17 +1,24 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import { BsFillHouseAddFill } from 'react-icons/bs';
 
-import { MdHomeWork, MdOutlinePayment, MdOutlineReviews } from 'react-icons/md';
+import {
+  MdOutlinePayment,
+  MdOutlineReviews,
+  MdReviews,
+  MdUpcoming,
+} from 'react-icons/md';
 import { AiOutlineBars } from 'react-icons/ai';
-import { BsGraphUp } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../Provider/AuthProvider';
+
 import useAdmin from '../../Hooks/useAdmin';
 import { FaHome, FaUser } from 'react-icons/fa';
 import { FaCodePullRequest } from 'react-icons/fa6';
+import { RiAdminFill } from 'react-icons/ri';
+import { GrStatusInfoSmall, GrUserManager } from 'react-icons/gr';
+import { IoMdAddCircle } from 'react-icons/io';
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
@@ -81,7 +88,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                    <BsGraphUp className="w-5 h-5" />
+                    <RiAdminFill className="w-5 h-5" />
 
                     <span className="mx-4 font-medium">Admin Profile</span>
                   </NavLink>
@@ -96,7 +103,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                    <BsGraphUp className="w-5 h-5" />
+                    <GrUserManager className="w-5 h-5" />
 
                     <span className="mx-4 font-medium">Manage Users</span>
                   </NavLink>
@@ -112,7 +119,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                    <BsGraphUp className="w-5 h-5" />
+                    <MdReviews className="w-5 h-5" />
 
                     <span className="mx-4 font-medium">AllReview</span>
                   </NavLink>
@@ -141,7 +148,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                    <BsFillHouseAddFill className="w-5 h-5" />
+                    <IoMdAddCircle className="w-5 h-5" />
 
                     <span className="mx-4 font-medium">All Meals</span>
                   </NavLink>
@@ -156,7 +163,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                    <MdHomeWork className="w-5 h-5" />
+                    <MdUpcoming className="w-5 h-5" />
 
                     <span className="mx-4 font-medium">Upcoming Meals</span>
                   </NavLink>
@@ -171,7 +178,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                    <MdHomeWork className="w-5 h-5" />
+                    <GrStatusInfoSmall className="w-5 h-5" />
 
                     <span className="mx-4 font-medium">Serve Meals</span>
                   </NavLink>
