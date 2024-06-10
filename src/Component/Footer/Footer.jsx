@@ -2,11 +2,11 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="footer footer-center p-10 pb-5 bg-info text-white">
+    <footer className="footer footer-center p-10 pb-5 bg-yellow-500 text-white">
       <aside>
         <p className="font-bold text-xl ">
           <br />
-          QuerySay <br />
+          Hostel Harmony <br />
           Providing reliable tech since 2024
         </p>
         <p>Copyright © 2024 - All right reserved</p>

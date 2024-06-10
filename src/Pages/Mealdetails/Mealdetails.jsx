@@ -148,59 +148,88 @@ const Mealdetails = () => {
   if (allisLoading) return <div>Loading...</div>;
   console.log(AllReview);
   return (
-    <div className="hero h-[500px] bg-base-200">
-      <div className="hero-content flex-col lg:flex-row">
-        <img
-          src={singleMeal.image}
-          className="w-[300px] h-[300px] rounded-lg shadow-2xl"
-        />
-        <div>
-          <h1 className="text-5xl font-bold">{singleMeal.title}</h1>
-          <p className="py-2">{singleMeal.ingredients}</p>
-          <p className="py-2">{singleMeal.category}</p>
-          <p className="py-2">{singleMeal.price}</p>
-          <p className="py-2">{singleMeal.rating}</p>
-          <p className="py-2">{singleMeal.postTime}</p>
-          <div className="flex justify-around">
-            <p className="py-2">like {singleMeal.like}</p>
-            <p className="py-2">reviews {singleMeal.review}</p>
-          </div>
-          <div className="flex">
-            <button className="btn btn-primary mr-4" onClick={handleLike}>
-              {hasLiked ? 'Liked' : 'Like'}
-            </button>
-            {subscriptionPackage ? (
-              <button className="btn btn-primary" onClick={handleMealRequest}>
-                Meal Request
-              </button>
-            ) : (
-              <p>Please wait...</p>
-            )}
-          </div>
-          <div>
-            <h2 className="text-3xl mt-4">Reviews</h2>
-            <form onSubmit={handleReviewSubmit}>
-              <textarea
-                value={review}
-                onChange={e => setReview(e.target.value)}
-                className="textarea textarea-bordered w-full mt-2"
-                placeholder="Write your review..."
-              ></textarea>
-              <button className="btn btn-primary mt-2" type="submit">
-                Submit Review
-              </button>
-            </form>
-            <div className="mt-4">
-              {AllReview &&
-                AllReview?.map((rev, index) => (
-                  <div key={index} className="border p-2 my-2 rounded">
-                    <p>{rev.review}</p>
-                  </div>
-                ))}
+    <div>
+      <div className="hero-content flex-col lg:flex lg:flex-row">
+        <div className="text-center lg:text-left">
+          <div className="card lg:h-[500px] lg:card-side bg-base-100 shadow-xl">
+            <figure className="">
+              <img src={singleMeal.image} alt="Album" />
+            </figure>
+            <div className="card-body text-start">
+              <h2 className="card-title">{singleMeal.title}</h2>
+              <p>{singleMeal.category}</p>
+              <p>Ingredients : {singleMeal.ingredients}</p>
+              <p>{singleMeal.description}</p>
+              <p> Price : {singleMeal.price}</p>
+              <p> Rating : {singleMeal.rating}</p>
+              <div className="flex items-center gap-5">
+                <h2 className="font-bold text-xl">
+                  {' '}
+                  Like :{' '}
+                  <span className="text-yellow-500">{singleMeal.like}</span>
+                </h2>
+                <h2 className="font-bold text-xl">
+                  Review :{' '}
+                  <span className="text-yellow-500">{singleMeal.review}</span>
+                </h2>
+              </div>
+              <div className="flex">
+                <button className="btn btn-warning mr-4" onClick={handleLike}>
+                  {hasLiked ? 'Liked' : 'Like'}
+                </button>
+                {subscriptionPackage ? (
+                  <button
+                    className="btn btn-warning"
+                    onClick={handleMealRequest}
+                  >
+                    Meal Request
+                  </button>
+                ) : (
+                  <p>Please wait...</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div className="mt-4">
+        {AllReview &&
+          AllReview?.map((rev, index) => (
+            <div key={rev.id}>
+              <div className="chat chat-start">
+                <div className="chat-image avatar">
+                  <div className="w-16 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src={rev.User.photo}
+                    />
+                  </div>
+                </div>
+                <div className="chat-bubble  chat-bubble-warning">
+                  <div className="hero-content flex-col lg:flex-row">
+                    <div>
+                      <h1 className="text-lg font-bold">{rev.User.Name}</h1>
+                      <p className="">{rev.User.email}</p>
+                      <p className="">{rev.currentDateAndTime}</p>
+                      <p className="text-xl font-bold pt-2 ">{rev.review}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+      </div>
+      <form onSubmit={handleReviewSubmit}>
+        <textarea
+          value={review}
+          onChange={e => setReview(e.target.value)}
+          className="input input-bordered input-warning w-full "
+          placeholder="Write your review..."
+        ></textarea>
+        <button className="btn btn-warning mt-2 " type="submit">
+          Submit Review
+        </button>
+      </form>
     </div>
   );
 };

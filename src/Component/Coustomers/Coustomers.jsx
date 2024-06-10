@@ -36,7 +36,7 @@ const Coustomers = () => {
               </svg>
             </p>
           </div>
-          <div className="flex flex-col items-center justify-center p-8 rounded-b-lg bg-info text-gray-900">
+          <div className="flex flex-col items-center justify-center p-8 rounded-b-lg bg-yellow-400 text-gray-900">
             <img
               src="https://source.unsplash.com/50x50/?portrait?1"
               alt=""
@@ -70,7 +70,7 @@ const Coustomers = () => {
               </svg>
             </p>
           </div>
-          <div className="flex flex-col items-center justify-center p-8 rounded-b-lg bg-info text-gray-900">
+          <div className="flex flex-col items-center justify-center p-8 rounded-b-lg bg-yellow-400 text-gray-900">
             <img
               src="https://source.unsplash.com/50x50/?portrait?2"
               alt=""
@@ -104,7 +104,7 @@ const Coustomers = () => {
               </svg>
             </p>
           </div>
-          <div className="flex flex-col items-center justify-center p-8 rounded-b-lg bg-info text-gray-900">
+          <div className="flex flex-col items-center justify-center p-8 rounded-b-lg bg-yellow-400 text-gray-900">
             <img
               src="https://source.unsplash.com/50x50/?portrait?3"
               alt=""
@@ -140,7 +140,7 @@ const Coustomers = () => {
               </svg>
             </p>
           </div>
-          <div className="flex flex-col items-center justify-center p-8 rounded-b-lg bg-info text-gray-900">
+          <div className="flex flex-col items-center justify-center p-8 rounded-b-lg bg-yellow-400 text-gray-900">
             <img
               src="https://source.unsplash.com/50x50/?portrait?4"
               alt=""

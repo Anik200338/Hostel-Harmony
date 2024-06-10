@@ -11,7 +11,6 @@ const Home = () => {
       <MealTab></MealTab>
       <Coustomers></Coustomers>
       <Memberprices></Memberprices>
-      <div className="w-full mt-20"></div>
     </div>
   );
 };
