@@ -15,6 +15,7 @@ const MyReview = () => {
     data: ForMe = [],
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ['ForMe', user],
     queryFn: async () => {
@@ -65,6 +66,7 @@ const MyReview = () => {
                     key={myrev.id}
                     myrev={myrev}
                     index={index + offset}
+                    refetch={refetch}
                   />
                 ))}
               </tbody>

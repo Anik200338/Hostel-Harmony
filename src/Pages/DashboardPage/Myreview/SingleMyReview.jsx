@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import TmyBody from './TmyBody';
 import Swal from 'sweetalert2';
 
-const SingleMyReview = ({ myrev, index }) => {
+const SingleMyReview = ({ myrev, index, refetch }) => {
   const axiosPublic = useAxiosPublic();
   const { review, id, _id } = myrev;
 
@@ -39,8 +39,9 @@ const SingleMyReview = ({ myrev, index }) => {
           .then(res => res.json())
           .then(data => {
             if (data.deletedCount > 0) {
-              Swal.fire('Deleted!', 'Your card has been deleted.', 'success');
+              Swal.fire('Deleted!', 'Your Review has been deleted.', 'success');
             }
+            refetch();
           });
       }
     });

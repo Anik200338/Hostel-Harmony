@@ -2,27 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const TReqested = ({ Tmyb, status, index, handleDelete, cop }) => {
-  const { title, _id, review } = Tmyb;
+  const { title, _id, review, like } = Tmyb;
   return (
     <tr>
       <td>{index + 1}</td>
-      <td>{status}</td>
       <td>{title}</td>
-      <td>{cop}</td>
+      <td>{like}</td>
       <td>{review}</td>
-      <td>
-        <div className="card-actions justify-between">
-          <Link to={`/mealDetails/${_id}`}>
-            <button className="btn btn-accent">View Details</button>
-          </Link>
-        </div>
-      </td>
+      <td>{status}</td>
       <td>
         <button
           onClick={() => handleDelete(cop, _id)}
           className="btn btn-error"
         >
-          Delete
+          Cancel
         </button>
       </td>
     </tr>

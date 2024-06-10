@@ -1,21 +1,26 @@
 import React from 'react';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 import { useQuery } from '@tanstack/react-query';
-import TReqested from './TReqested';
+import TRequested from './TReqested';
 import Swal from 'sweetalert2';
 
-const SingleRequested = ({ Queries, index }) => {
+const SingleRequested = ({ Queries, index, refetch }) => {
   const axiosPublic = useAxiosPublic();
   const { status, id, _id } = Queries;
-  const { data: singlereq = {}, isLoading } = useQuery({
+
+  const {
+    data: singlereq = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ['singlereq', id],
     queryFn: async () => {
       const res = await axiosPublic.get(`/singlereq/${id}`);
       return res.data;
     },
   });
+
   const handleDelete = (cop, _id) => {
-    console.log(cop, _id);
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -35,18 +40,28 @@ const SingleRequested = ({ Queries, index }) => {
           .then(res => res.json())
           .then(data => {
             if (data.deletedCount > 0) {
-              Swal.fire('Deleted!', 'Your card has been deleted.', 'success');
+              Swal.fire(
+                'Deleted!',
+                'Your meal request has been deleted.',
+                'success'
+              );
+              refetch(); // Refetch the data after deletion
             }
+          })
+          .catch(error => {
+            Swal.fire('Error!', 'An error occurred while deleting.', 'error');
           });
       }
     });
   };
+
   if (isLoading) return <div>Loading...</div>;
-  console.log(singlereq);
+  if (isError) return <div>Error fetching data...</div>;
+
   return (
     <>
       {singlereq.map(Tmyb => (
-        <TReqested
+        <TRequested
           key={Tmyb.id}
           Tmyb={Tmyb}
           status={status}

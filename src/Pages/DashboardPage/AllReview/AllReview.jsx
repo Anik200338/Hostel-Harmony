@@ -8,7 +8,7 @@ import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 const AllReview = () => {
   const axiosSecure = useAxiosSecure();
   const [currentPage, setCurrentPage] = useState(0);
-  const reviewsPerPage = 10;
+  const reviewsPerPage = 1;
 
   const { data: reviews = [], isLoading } = useQuery({
     queryKey: ['reviews'],

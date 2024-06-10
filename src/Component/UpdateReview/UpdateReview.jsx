@@ -67,7 +67,11 @@ const UpdateReview = () => {
             </label>
           </div>
         </div>
-        <input type="submit" value="Update Query" className="btn btn-block" />
+        <input
+          type="submit"
+          value="Update Review"
+          className="btn btn-block btn-warning"
+        />
       </form>
     </div>
   );

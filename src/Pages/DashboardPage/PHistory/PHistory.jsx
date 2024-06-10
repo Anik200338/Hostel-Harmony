@@ -1,13 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../../Provider/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
-import Payment from './../../../Component/Checkout/Payment/Payment';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import Pagination from '../../../Component/common/Pagination';
 
 const PHistory = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
-  const { data: paymentHistory = [], isLoading } = useQuery({
+  const [currentPage, setCurrentPage] = useState(0);
+  const paymentsPerPage = 10;
+
+  const {
+    data: paymentHistory = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ['paymentHistory', user],
     queryFn: async () => {
       const res = await axiosSecure.get(`/paymentHistory/${user?.email}`);
@@ -16,39 +23,56 @@ const PHistory = () => {
   });
 
   if (isLoading) return <div>Loading...</div>;
-  console.log(paymentHistory);
+  if (isError) return <div>Error fetching payment history...</div>;
+
+  const pageCount = Math.ceil(paymentHistory.length / paymentsPerPage);
+  const offset = currentPage * paymentsPerPage;
+  const currentPayments = paymentHistory.slice(
+    offset,
+    offset + paymentsPerPage
+  );
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   return (
-    <div className="overflow-x-auto">
-      <table className="table table-zebra w-full">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>email</th>
-            <th>transactionId</th>
-            <th>date</th>
-            <th>Payment</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paymentHistory.length > 0 ? (
-            paymentHistory.map((meal, index) => (
-              <tr key={meal._id}>
-                <th>{index + 1}</th>
-                <td>{meal.email}</td>
-                <td>{meal.transactionId}</td>
-                <td>{meal.date}</td>
-                <td>{meal.price}</td>
-              </tr>
-            ))
-          ) : (
+    <div className="">
+      <div className="overflow-x-auto mb-10 relative">
+        <table className="table table-zebra w-full ">
+          <thead>
             <tr>
-              <td colSpan="6" className="text-center">
-                No meals found
-              </td>
+              <th>#</th>
+              <th>Email</th>
+              <th>Transaction ID</th>
+              <th>Date</th>
+              <th>Payment</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {currentPayments.length > 0 ? (
+              currentPayments.map((meal, index) => (
+                <tr key={meal._id}>
+                  <th>{index + 1 + offset}</th>
+                  <td>{meal.email}</td>
+                  <td>{meal.transactionId}</td>
+                  <td>{meal.date}</td>
+                  <td>{meal.price}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center">
+                  No payment history found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <div className="absolute left-1/2 bottom-0 mb-5 ">
+        <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
+      </div>
     </div>
   );
 };
