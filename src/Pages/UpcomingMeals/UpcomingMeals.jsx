@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import useAxiosPublic from '../../Hooks/useAxiosPublic';
 import UpcomingCard from '../../Component/UpcomingCard/UpcomingCard';
+import { Helmet } from 'react-helmet-async';
 
 const UpcomingMeals = () => {
   const axiosPublic = useAxiosPublic();
@@ -20,6 +21,9 @@ const UpcomingMeals = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20 lg:p-20">
+      <Helmet>
+        <title>UpcomingMeal</title>
+      </Helmet>
       {UpcomingMeal.map(UpcomingSingle => (
         <UpcomingCard
           key={UpcomingSingle.id}

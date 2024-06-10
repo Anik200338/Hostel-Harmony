@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useAxiosPublic from '../../Hooks/useAxiosPublic';
 import MealCard from '../../Component/MealCard/MealCard';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { Helmet } from 'react-helmet-async';
 
 const Meals = () => {
   const axiosPublic = useAxiosPublic();
@@ -61,6 +62,9 @@ const Meals = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Helmet>
+        <title>Meals</title>
+      </Helmet>
       <form onSubmit={handleSearch} className="mb-4 flex justify-center">
         <input
           type="text"
