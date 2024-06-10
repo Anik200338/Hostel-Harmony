@@ -70,7 +70,7 @@ const PHistory = () => {
           </tbody>
         </table>
       </div>
-      <div className="absolute left-1/2 bottom-0 mb-5 ">
+      <div className="absolute inset-x-0 lg:left-1/2 bottom-0 mb-5">
         <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
       </div>
     </div>

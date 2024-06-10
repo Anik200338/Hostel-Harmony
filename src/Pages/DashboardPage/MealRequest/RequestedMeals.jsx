@@ -37,7 +37,7 @@ const RequestedMeals = () => {
 
   return (
     <div>
-      <div className="mb-10 h-full relative">
+      <div className="mb-10 h-full relative overflow-x-auto">
         {requestedMeals.length === 0 ? (
           <div>No requested meals found.</div>
         ) : (
@@ -65,7 +65,7 @@ const RequestedMeals = () => {
           </table>
         )}
       </div>
-      <div className="absolute left-1/2 bottom-0 mb-5">
+      <div className="absolute inset-x-0 lg:left-1/2 bottom-0 mb-5">
         <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
       </div>
     </div>

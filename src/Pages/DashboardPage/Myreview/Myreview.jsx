@@ -39,7 +39,7 @@ const MyReview = () => {
 
   return (
     <div>
-      <div className="mb-10 h-full relative">
+      <div className="overflow-x-auto mb-10 relative">
         {ForMe.length === 0 ? (
           <div>No reviews found.</div>
         ) : (
@@ -75,7 +75,7 @@ const MyReview = () => {
         )}
       </div>
       {/* Pagination at the footer */}
-      <div className=" absolute left-1/2 bottom-0 mb-5">
+      <div className=" absolute inset-x-0 lg:left-1/2 bottom-0 mb-5">
         <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
       </div>
     </div>
