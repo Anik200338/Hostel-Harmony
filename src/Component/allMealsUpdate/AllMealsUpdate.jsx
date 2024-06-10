@@ -8,6 +8,7 @@ const AllMealsUpdate = () => {
   const { id } = useParams();
   const [craft, setCraft] = useState({});
   const { register, handleSubmit, setValue } = useForm();
+  const [isLoading, setIsLoading] = useState(false);
   const image_hosting_api = `https://api.imgbb.com/1/upload?key=${
     import.meta.env.VITE_IMAGE_HOSTING_KEY
   }`;
@@ -23,6 +24,7 @@ const AllMealsUpdate = () => {
   }, [id, setValue]);
 
   const onSubmit = async data => {
+    setIsLoading(true); // Set loading state to true when the form is submitted
     const imageFile = new FormData();
     imageFile.append('image', data.image[0]);
 
@@ -65,10 +67,25 @@ const AllMealsUpdate = () => {
             icon: 'success',
             confirmButtonText: 'Cool',
           });
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to update the meal.',
+            icon: 'error',
+            confirmButtonText: 'Okay',
+          });
         }
       }
     } catch (error) {
       console.error('Error uploading image:', error);
+      Swal.fire({
+        title: 'Error!',
+        text: 'An error occurred while uploading the image.',
+        icon: 'error',
+        confirmButtonText: 'Okay',
+      });
+    } finally {
+      setIsLoading(false); // Set loading state to false after the process is completed
     }
   };
 
@@ -160,8 +177,12 @@ const AllMealsUpdate = () => {
           className="file-input w-full max-w-xs"
         />
       </div>
-      <button className="btn" type="submit">
-        Update Meal
+      <button
+        className="btn btn-warning w-full"
+        type="submit"
+        disabled={isLoading}
+      >
+        {isLoading ? 'Updating...' : 'Update Meal'}
       </button>
     </form>
   );

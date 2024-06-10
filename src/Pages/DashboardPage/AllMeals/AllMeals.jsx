@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import ReactPaginate from 'react-paginate';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import Pagination from '../../../Component/common/Pagination';
 
 const AllMeals = () => {
   const axiosSecure = useAxiosSecure();
@@ -24,7 +23,7 @@ const AllMeals = () => {
       const res = await axiosSecure.get(
         `/AllMeals?sortBy=${sortField}&order=${sortOrder}&page=${currentPage}&limit=${itemsPerPage}`
       );
-      console.log('API Response:', res.data); // Log the response data
+      console.log('API Response:', res.data);
       return res.data;
     },
   });
@@ -48,9 +47,8 @@ const AllMeals = () => {
         )
           .then(res => res.json())
           .then(data => {
-            console.log('Delete Response:', data); // Log the response to understand its structure
+            console.log('Delete Response:', data);
 
-            // Check for a successful deletion
             if (data.deletedCount > 0 || data.acknowledged) {
               Swal.fire('Deleted!', 'Your meal has been deleted.', 'success');
               refetch();
@@ -70,18 +68,16 @@ const AllMeals = () => {
     });
   };
 
-  const handlePageClick = ({ selected }) => {
+  const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching data</div>;
 
-  // Calculate the current items for the current page
+  const pageCount = Math.ceil(AllMealsData.length / itemsPerPage);
   const offset = currentPage * itemsPerPage;
-  const currentItems = AllMealsData.slice(offset, offset + itemsPerPage);
-
-  console.log('Current Meals:', currentItems); // Log the current meals data
+  const currentMeals = AllMealsData.slice(offset, offset + itemsPerPage);
 
   return (
     <div>
@@ -116,12 +112,14 @@ const AllMeals = () => {
               <th>Likes</th>
               <th>Reviews</th>
               <th>Admin Name</th>
-              <th>Actions</th>
+              <th>update</th>
+              <th>Delete</th>
+              <th>view meal</th>
             </tr>
           </thead>
           <tbody>
-            {currentItems.length > 0 ? (
-              currentItems.map((meal, index) => (
+            {currentMeals.length > 0 ? (
+              currentMeals.map((meal, index) => (
                 <tr key={meal._id}>
                   <th>{index + 1 + offset}</th>
                   <td>{meal.title}</td>
@@ -132,12 +130,16 @@ const AllMeals = () => {
                     <Link to={`allMealsUpdate/${meal._id}`}>
                       <button className="btn btn-accent">Update</button>
                     </Link>
+                  </td>
+                  <td>
                     <button
                       onClick={() => handleDelete(meal._id)}
                       className="btn btn-error ml-2"
                     >
                       Delete
                     </button>
+                  </td>
+                  <td>
                     <Link to={`/mealDetails/${meal._id}`}>
                       <button className="btn btn-accent ml-2">
                         View Details
@@ -156,20 +158,9 @@ const AllMeals = () => {
           </tbody>
         </table>
       </div>
-      <ReactPaginate
-        previousLabel={'Previous'}
-        nextLabel={'Next'}
-        breakLabel={'...'}
-        breakClassName={'break-me'}
-        pageCount={Math.ceil(AllMealsData.length / itemsPerPage)}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        onPageChange={handlePageClick}
-        containerClassName={'pagination'}
-        subContainerClassName={'pages pagination'}
-        activeClassName={'active '}
-        className="flex justify-between "
-      />
+      <div className="absolute inset-x-0 lg:left-1/4 bottom-0 mb-5">
+        <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
+      </div>
     </div>
   );
 };
