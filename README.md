@@ -1,11 +1,15 @@
 # Hostel Management System
 
 Welcome to the Hostel Management System, designed to streamline hostel
-operations and enhance the student experience at [University Name].
+operations and enhance the student experience at University.
 
 ## Visit the Live Site
 
-Visit the live site: [Hostel Harmony](https://assignment-11-f6ebc.web.app/)
+Visit the live site: [Hostel Harmony](https://assignment-12-2d5b0.web.app/)
+
+## Admin Email : serkaranik144@gmail.com
+
+## Admin Password : Aniksa16
 
 ## Features
 

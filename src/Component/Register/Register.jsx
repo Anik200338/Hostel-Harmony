@@ -41,7 +41,7 @@ const Register = () => {
     }
     createUser(data.email, data.password, data.Photo, data.fullname)
       .then(() => {
-        updateUserProfile(data.fullname, data.Photo).then(() => {
+        updateUserProfile(data.fullname, data.Photo, data.email).then(() => {
           const userInfo = {
             name: data.fullname,
             email: data.email,

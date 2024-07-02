@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 import { IoIosAdd } from 'react-icons/io';
 import { AuthContext } from '../../../Provider/AuthProvider';
@@ -6,6 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
+import toast from 'react-hot-toast';
 
 const UpMeals = () => {
   const axiosPublic = useAxiosPublic();
@@ -45,25 +46,29 @@ const UpMeals = () => {
 
   const handleSubmit = async meal => {
     try {
-      const mealItem = {
-        title: meal.title,
-        category: meal.category,
-        image: meal.image,
-        ingredients: meal.ingredients,
-        description: meal.description,
-        price: meal.price,
-        rating: meal.rating,
-        postTime: new Date().toLocaleString(),
-        like: 0,
-        review: 0,
-        cartId: meal._id,
-        admin: {
-          name: user?.displayName,
-          image: user?.photoURL,
-          email: user?.email,
-        },
-      };
-      await mutateAsync(mealItem);
+      if (meal.like == 10) {
+        const mealItem = {
+          title: meal.title,
+          category: meal.category,
+          image: meal.image,
+          ingredients: meal.ingredients,
+          description: meal.description,
+          price: meal.price,
+          rating: meal.rating,
+          postTime: new Date().toLocaleString(),
+          like: 0,
+          review: 0,
+          cartId: meal._id,
+          admin: {
+            name: user?.displayName,
+            image: user?.photoURL,
+            email: user?.email,
+          },
+        };
+        await mutateAsync(mealItem);
+      } else {
+        toast.error('Meal needs at least 10 likes to be published.');
+      }
     } catch (err) {
       console.error(err);
     }
@@ -89,7 +94,7 @@ const UpMeals = () => {
         <div className="hero-content text-center">
           <div className="max-w-md">
             <h1 className="text-2xl font-bold">
-              Empower Your Voice: AddQuery and Let Your Questions Spark Dialogue
+              Empower Your Voice: Add UpComingMeals
             </h1>
             <Link
               to="addUpcomingMeal"
@@ -100,7 +105,7 @@ const UpMeals = () => {
                 <span className="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-purple-500 rounded-full blur-md"></span>
                 <span className="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-pink-500 rounded-full blur-md"></span>
               </span>
-              <span className="relative text-white">Add Queries</span>
+              <span className="relative text-white">Add UpComingMeals</span>
             </Link>
           </div>
         </div>
@@ -113,6 +118,7 @@ const UpMeals = () => {
                 <th>#</th>
                 <th>Image</th>
                 <th>Name</th>
+                <th>Like</th>
                 <th>Price</th>
                 <th>Add to meals collection</th>
               </tr>
@@ -134,6 +140,7 @@ const UpMeals = () => {
                     </div>
                   </td>
                   <td>{item.title}</td>
+                  <td>{item.like}</td>
                   <td>${item.price}</td>
                   <td>
                     <button

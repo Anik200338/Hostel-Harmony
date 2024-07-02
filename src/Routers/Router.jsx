@@ -26,8 +26,9 @@ import AllMealsUpdate from '../Component/allMealsUpdate/AllMealsUpdate';
 import AdminProfile from '../Pages/DashboardPage/AdminProfile/AdminProfile';
 import UserProfile from '../Pages/DashboardPage/UserProfile/UserProfile';
 import PHistory from '../Pages/DashboardPage/PHistory/PHistory';
-import PrivateRoute from './Private/PrivateRoute';
+
 import AdminRoute from './AdminRoute/AdminRoute';
+import PrivateRoute from './Private/PrivateRoute';
 
 const router = createBrowserRouter([
   {

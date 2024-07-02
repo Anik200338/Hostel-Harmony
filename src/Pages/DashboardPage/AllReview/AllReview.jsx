@@ -34,7 +34,7 @@ const AllReview = () => {
   };
 
   return (
-    <div className="">
+    <div className=" h-[1000px]">
       <div className="mb-10  overflow-x-auto">
         <table className="table">
           <thead>

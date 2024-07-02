@@ -10,7 +10,7 @@ const ServeMeals = () => {
   const axiosSecure = useAxiosSecure();
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 1;
+  const itemsPerPage = 10;
 
   const {
     data: ServeMeals = [],
@@ -70,7 +70,7 @@ const ServeMeals = () => {
           <SingleServeMeals
             key={Queries.id}
             Queries={Queries}
-            index={index + startIndex}
+            index={index + 1 + startIndex}
             refetch={refetch}
           />
         ))}

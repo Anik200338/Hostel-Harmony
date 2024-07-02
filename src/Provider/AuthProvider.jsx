@@ -31,15 +31,21 @@ const AuthProviders = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  const updateUserProfile = (name, image) => {
+  const updateUserProfile = (name, image, email) => {
     setLoading(true); // Set loading to true before the update
     return new Promise((resolve, reject) => {
       updateProfile(auth.currentUser, {
         displayName: name,
         photoURL: image,
+        email: email,
       })
         .then(() => {
-          setUser({ ...user, displayName: name, photoURL: image });
+          setUser({
+            ...user,
+            displayName: name,
+            photoURL: image,
+            email: email,
+          });
           resolve(); // Resolve the promise if the update is successful
         })
         .catch(error => {
@@ -87,11 +93,10 @@ const AuthProviders = ({ children }) => {
       } else {
         // TODO: remove token (if token stored in the client side: Local storage, caching, in memory)
         localStorage.removeItem('access-token');
+        setLoading(false);
       }
     });
-    return () => {
-      unSubscribe();
-    };
+    return () => unSubscribe();
   }, [axiosPublic]);
 
   const authInfo = {
